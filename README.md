@@ -5,18 +5,9 @@ Demetrious Shoniwa
 Geoffrey Etu
 
 
+StudyHub is a web application designed to help college students organize their courses, assignments, and study resources in one place.
+The application provides authenticated students with a personalized dashboard where they can manage academic information and quickly identify upcoming assignments.
 
-
-
-
-
-
-
-
-
-
-
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
