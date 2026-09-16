@@ -3,6 +3,8 @@ Jesse Tusiime
 Jessica Kitchen
 Demetrious Shoniwa
 Geoffrey Etu
+Ifeanyi Eme
+
 
 
 StudyHub is a web application designed to help college students organize their courses, assignments, and study resources in one place.
