@@ -1,15 +1,7 @@
-Team Members:
-Jesse Tusiime
-Jessica Kitchen
-Demetrious Shoniwa
-Geoffrey Etu
-Ifeanyi Eme
+# StudyHub
+[StudyHub]() is a web application designed to help college students organize their courses, assignments, and study resources in one place. The application provides authenticated students with a personalized dashboard where they can manage academic information and quickly identify upcoming assignments.
 
-
-[StudyHub]() is a web application designed to help college students organize their courses, assignments, and study resources in one place.
-The application provides authenticated students with a personalized dashboard where they can manage academic information and quickly identify upcoming assignments.
-
-## Team Members:
+## Team Members
 
 - Jesse Tusiime
 - Jessica Kitchen
