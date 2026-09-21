@@ -8,6 +8,7 @@
 - Demetrious Shoniwa
 - Geoffrey Etu
 - Brandon Arroyo
+Ifeanyi Okali Eme
 
 ## Getting Started
 
