@@ -1,69 +1,194 @@
-import Image from 'next/image';
+import type { Metadata } from 'next';
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: 'Dashboard',
+  description: 'Your courses, assignments, and study resources at a glance.',
+};
+
+
+
+export default function DashboardPage() {
   return (
-    <div className='flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black'>
-      <main className='flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start'>
-        <Image
-          className='dark:invert h-5 w-[100px]'
-          src='/next.svg'
-          alt='Next.js logo'
-          width={100}
-          height={20}
-          priority
-        />
-        <div className='flex flex-col items-center gap-6 text-center sm:items-start sm:text-left'>
-          <h1 className='max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50'>
-            To get started, edit the{' '}
-            <code className='rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]'>
-              page.tsx
-            </code>{' '}
-            file.
-          </h1>
-          <p className='max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400'>
-            Looking for a starting point or more instructions? Head over to{' '}
-            <a
-              href='https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-              className='font-medium text-zinc-950 dark:text-zinc-50'
-            >
-              Templates
-            </a>{' '}
-            or the{' '}
-            <a
-              href='https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-              className='font-medium text-zinc-950 dark:text-zinc-50'
-            >
-              Learning
-            </a>{' '}
-            center.
-          </p>
-        </div>
-        <div className='flex flex-col gap-4 text-base font-medium sm:flex-row'>
-          <a
-            className='flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]'
-            href='https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            <Image
-              className='dark:invert h-[14px] w-4'
-              src='/vercel.svg'
-              alt='Vercel logomark'
-              width={16}
-              height={14}
+    <main className="flex-1 mx-auto flex max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 sm:py-10">
+      {/* Section 1: Welcome + search */}
+      <section className="rounded-2xl border-2 border-stone-200 bg-[var(--surface)] p-6 shadow-sm sm:p-8">
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-4">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-[var(--dark-text)] sm:text-3xl">
+                Welcome back, <span className="text-[var(--primary)]">[User Name]</span>!
+              </h1>
+              <p className="mt-1 text-sm text-[var(--text-muted)] sm:text-base">
+                Here&apos;s what&apos;s on your plate.
+              </p>
+            </div>
+          </div>
+
+          {/* Placeholder only — search isn't wired up yet */}
+          <div className="relative w-full md:w-80">
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--text-subtle)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M21 21l-4.3-4.3" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search courses, assignments, resources..."
+              className="w-full rounded-lg border-2 border-stone-200 bg-[var(--background)] py-2.5 pl-10 pr-4 text-sm text-[var(--dark-text)] placeholder:text-[var(--text-subtle)] transition-colors focus:border-[var(--accent)] focus:outline-none"
             />
-            Deploy Now
-          </a>
-          <a
-            className='flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]'
-            href='https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Documentation
+          </div>
+        </div>
+      </section>
+
+
+
+      {/* Section 2: Courses */}
+      <section>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-[var(--dark-text)] sm:text-2xl">
+            Courses
+          </h2>
+          <a href="/courses" className="text-sm font-semibold text-[var(--primary)] hover:text-[var(--primary-hover)]">
+            View all
           </a>
         </div>
-      </main>
-    </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-[var(--primary)] bg-[var(--surface)] p-5 shadow-sm transition-shadow hover:shadow-md">
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--primary-light)] text-sm font-bold text-[var(--primary)]">
+              C1
+            </span>
+            <p className="mt-3 font-semibold text-[var(--dark-text)]">Course Name 1</p>
+            <p className="text-sm text-[var(--text-muted)]">Instructor Name</p>
+          </div>
+          <div className="rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-[var(--accent)] bg-[var(--surface)] p-5 shadow-sm transition-shadow hover:shadow-md">
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-light)] text-sm font-bold text-[var(--accent)]">
+              C2
+            </span>
+            <p className="mt-3 font-semibold text-[var(--dark-text)]">Course Name 2</p>
+            <p className="text-sm text-[var(--text-muted)]">Instructor Name</p>
+          </div>
+          <div className="rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-[var(--primary)] bg-[var(--surface)] p-5 shadow-sm transition-shadow hover:shadow-md">
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--primary-light)] text-sm font-bold text-[var(--primary)]">
+              C3
+            </span>
+            <p className="mt-3 font-semibold text-[var(--dark-text)]">Course Name 3</p>
+            <p className="text-sm text-[var(--text-muted)]">Instructor Name</p>
+          </div>
+          <div className="rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-[var(--accent)] bg-[var(--surface)] p-5 shadow-sm transition-shadow hover:shadow-md">
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-light)] text-sm font-bold text-[var(--accent)]">
+              C4
+            </span>
+            <p className="mt-3 font-semibold text-[var(--dark-text)]">Course Name 4</p>
+            <p className="text-sm text-[var(--text-muted)]">Instructor Name</p>
+          </div>
+        </div>
+      </section>
+
+
+
+      {/* Section 3: Assignments */}
+      <section>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-[var(--dark-text)] sm:text-2xl">
+            Assignments
+          </h2>
+          <a href="/assignments" className="text-sm font-semibold text-[var(--primary)] hover:text-[var(--primary-hover)]">
+            View all
+          </a>
+        </div>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between gap-4 rounded-2xl border-2 border-stone-200 bg-[var(--surface)] p-5 shadow-sm transition-shadow hover:shadow-md">
+            <div className="flex items-center gap-4">
+              <span aria-hidden="true" className="h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--danger)]" />
+              <div>
+                <p className="font-semibold text-[var(--dark-text)]">Assignment Name 1</p>
+                <p className="text-sm text-[var(--text-muted)]">Course Name</p>
+              </div>
+            </div>
+            <span className="shrink-0 rounded-full bg-[var(--danger-light)] px-3 py-1.5 text-xs font-semibold text-[var(--danger)]">
+              Due soonest
+            </span>
+          </div>
+          <div className="flex items-center justify-between gap-4 rounded-2xl border-2 border-stone-200 bg-[var(--surface)] p-5 shadow-sm transition-shadow hover:shadow-md">
+            <div className="flex items-center gap-4">
+              <span aria-hidden="true" className="h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--accent)]" />
+              <div>
+                <p className="font-semibold text-[var(--dark-text)]">Assignment Name 2</p>
+                <p className="text-sm text-[var(--text-muted)]">Course Name</p>
+              </div>
+            </div>
+            <span className="shrink-0 rounded-full bg-[var(--accent-light)] px-3 py-1.5 text-xs font-semibold text-[var(--primary-hover)]">
+              Due date
+            </span>
+          </div>
+          <div className="flex items-center justify-between gap-4 rounded-2xl border-2 border-stone-200 bg-[var(--surface)] p-5 shadow-sm transition-shadow hover:shadow-md">
+            <div className="flex items-center gap-4">
+              <span aria-hidden="true" className="h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--primary)]" />
+              <div>
+                <p className="font-semibold text-[var(--dark-text)]">Assignment Name 3</p>
+                <p className="text-sm text-[var(--text-muted)]">Course Name</p>
+              </div>
+            </div>
+            <span className="shrink-0 rounded-full bg-[var(--primary-light)] px-3 py-1.5 text-xs font-semibold text-[var(--primary-hover)]">
+              Due date
+            </span>
+          </div>
+          <div className="flex items-center justify-between gap-4 rounded-2xl border-2 border-stone-200 bg-[var(--surface)] p-5 shadow-sm transition-shadow hover:shadow-md">
+            <div className="flex items-center gap-4">
+              <span aria-hidden="true" className="h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--primary)]" />
+              <div>
+                <p className="font-semibold text-[var(--dark-text)]">Assignment Name 4</p>
+                <p className="text-sm text-[var(--text-muted)]">Course Name</p>
+              </div>
+            </div>
+            <span className="shrink-0 rounded-full bg-[var(--primary-light)] px-3 py-1.5 text-xs font-semibold text-[var(--primary-hover)]">
+              Due date
+            </span>
+          </div>
+        </div>
+      </section>
+
+
+
+      {/* Section 4: Resources */}
+      <section>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-[var(--dark-text)] sm:text-2xl">
+            Resources
+          </h2>
+          <a href="/resources" className="text-sm font-semibold text-[var(--primary)] hover:text-[var(--primary-hover)]">
+            View all
+          </a>
+        </div>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-4 rounded-2xl border-2 border-stone-200 bg-[var(--surface)] p-5 shadow-sm transition-shadow hover:shadow-md">
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-semibold text-[var(--dark-text)]">Resource Name 1</p>
+              <p className="text-sm text-[var(--text-muted)]">Course Name</p>
+            </div>
+            <span className="shrink-0 text-xs font-medium text-[var(--text-subtle)]">
+              Accessed recently
+            </span>
+          </div>
+          <div className="flex items-center gap-4 rounded-2xl border-2 border-stone-200 bg-[var(--surface)] p-5 shadow-sm transition-shadow hover:shadow-md">
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-semibold text-[var(--dark-text)]">Resource Name 2</p>
+              <p className="text-sm text-[var(--text-muted)]">Course Name</p>
+            </div>
+            <span className="shrink-0 text-xs font-medium text-[var(--text-subtle)]">
+              Accessed earlier
+            </span>
+          </div>
+          <div className="flex items-center gap-4 rounded-2xl border-2 border-stone-200 bg-[var(--surface)] p-5 shadow-sm transition-shadow hover:shadow-md">
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-semibold text-[var(--dark-text)]">Resource Name 3</p>
+              <p className="text-sm text-[var(--text-muted)]">Course Name</p>
+            </div>
+            <span className="shrink-0 text-xs font-medium text-[var(--text-subtle)]">
+              Accessed earlier
+            </span>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
