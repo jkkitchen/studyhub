@@ -23,16 +23,16 @@ export default function LoginPage() {
     <main className="flex-1 flex items-center justify-center px-4 py-12">
       <section
         aria-labelledby="login-heading"
-        className="w-full max-w-md rounded-2xl border-2 border-stone-200 bg-[var(--surface)] p-8 shadow-sm sm:p-10"
+        className="w-full max-w-md rounded-2xl border-2 border-stone-200 bg-surface p-8 shadow-sm sm:p-10"
       >
 
         <h1
           id="login-heading"
-          className="text-3xl font-bold tracking-tight text-[var(--dark-text)]"
+          className="text-3xl font-bold tracking-tight text-dark-text"
         >
           Welcome to StudyHub
         </h1>
-        <p className="mt-2 text-base text-[var(--text-muted)]">
+        <p className="mt-2 text-base text-muted">
           Sign in to keep your courses, assignments, and study resources in one
           place.
         </p>
@@ -46,7 +46,7 @@ export default function LoginPage() {
         >
           <button
             type="submit"
-            className="flex w-full items-center justify-center gap-3 rounded-lg border-2 border-stone-200 bg-[var(--surface)] px-4 py-3 text-base font-semibold text-[var(--dark-text)] transition-colors hover:border-[var(--primary)] hover:bg-[var(--primary-light)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+            className="flex w-full items-center justify-center gap-3 rounded-lg border-2 border-stone-200 bg-surface px-4 py-3 text-base font-semibold text-dark-text transition-colors hover:border-primary hover:bg-primary-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
               <path
@@ -70,7 +70,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-[var(--text-muted)]">
+        <p className="mt-6 text-center text-sm text-muted">
           We only use your Google account to sign you in.
         </p>
       </section>

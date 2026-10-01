@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+
+
 interface NavLink {
   href: string;
   label: string;
@@ -77,11 +79,11 @@ export default function Header() {
 
   return (
     <>
-      <header className='sticky top-0 z-40 border-b-2 border-stone-200 bg-[var(--primary)]'>
+      <header className='sticky top-0 z-40 border-b-2 border-stone-200 bg-primary'>
         <div className='mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6'>
           <Link
             href='/'
-            className='rounded-md text-2xl font-bold tracking-tight text-[var(--surface)] transition-colors hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]'
+            className='rounded-md text-2xl font-bold tracking-tight text-surface transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent'
           >
             StudyHub
           </Link>
@@ -93,7 +95,7 @@ export default function Header() {
             aria-label='Open menu'
             aria-expanded={isOpen}
             aria-controls='site-menu'
-            className='inline-flex h-11 w-11 items-center justify-center rounded-lg text-[var(--surface)] transition-colors hover:bg-[var(--primary-light)] hover:text-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]'
+            className='inline-flex h-11 w-11 items-center justify-center rounded-lg text-surface transition-colors hover:bg-primary-light hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
           >
             <svg
               aria-hidden='true'
@@ -126,20 +128,18 @@ export default function Header() {
         role='dialog'
         aria-modal='true'
         aria-label='Main menu'
-        className={`fixed inset-y-0 right-0 z-50 flex w-72 max-w-[85vw] flex-col border-l-2 border-stone-200 bg-[var(--surface)] shadow-xl transition-[transform,visibility] duration-300 ease-out motion-reduce:transition-none ${
+        className={`fixed inset-y-0 right-0 z-50 flex w-72 max-w-[85vw] flex-col border-l-2 border-stone-200 bg-surface shadow-xl transition-[transform,visibility] duration-300 ease-out motion-reduce:transition-none ${
           isOpen ? 'visible translate-x-0' : 'invisible translate-x-full'
         }`}
       >
         <div className='flex h-16 items-center justify-between border-b-2 border-stone-200 px-4'>
-          <span className='text-lg font-semibold text-[var(--dark-text)]'>
-            Menu
-          </span>
+          <span className='text-lg font-semibold text-dark-text'>Menu</span>
           <button
             ref={closeButtonRef}
             type='button'
             onClick={closeMenu}
             aria-label='Close menu'
-            className='inline-flex h-11 w-11 items-center justify-center rounded-lg text-[var(--text-muted)] transition-colors hover:bg-[var(--primary-light)] hover:text-[var(--primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]'
+            className='inline-flex h-11 w-11 items-center justify-center rounded-lg text-muted transition-colors hover:bg-primary-light hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
           >
             <svg
               aria-hidden='true'
@@ -168,10 +168,10 @@ export default function Header() {
                     href={link.href}
                     onClick={() => setIsOpen(false)}
                     aria-current={active ? 'page' : undefined}
-                    className={`block rounded-lg px-4 py-3 text-base font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
+                    className={`block rounded-lg px-4 py-3 text-base font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
                       active
-                        ? 'bg-[var(--primary-light)] text-[var(--primary-hover)]'
-                        : 'text-[var(--dark-text)] hover:bg-[var(--accent-light)] hover:text-[var(--primary)]'
+                        ? 'bg-primary-light text-primary-hover'
+                        : 'text-dark-text hover:bg-accent-light hover:text-primary'
                     }`}
                   >
                     {link.label}
