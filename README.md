@@ -1,11 +1,7 @@
 # StudyHub
 
-[StudyHub](<>) is a web application designed to help college students organize their courses, assignments, and study resources in one place. The application provides authenticated students with a personalized dashboard where they can manage academic information and quickly identify upcoming assignments.
+[StudyHub](https://studyhub-jkk14.vercel.app/login) is a web application designed to help college students organize their courses, assignments, and study resources in one place. The application provides authenticated students with a personalized dashboard where they can manage academic information and quickly identify upcoming assignments.
 
-<<<<<<< HEAD
-StudyHub is a web application designed to help college students organize their courses, assignments, and study resources in one place.
-The application provides authenticated students with a personalized dashboard where they can manage academic information and quickly identify upcoming assignments.
-=======
 ## Team Members
 
 - Jesse Tusiime
@@ -13,8 +9,7 @@ The application provides authenticated students with a personalized dashboard wh
 - Demetrious Shoniwa
 - Geoffrey Etu
 - Brandon Arroyo
-Ifeanyi Okali Eme
->>>>>>> origin/main
+- Ifeanyi Okali Eme
 
 ## Getting Started
 
