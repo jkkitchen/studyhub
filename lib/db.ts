@@ -1,0 +1,114 @@
+//Import models
+// import Course from '@/models/Course';
+import Assignment from '@/models/Assignment';
+import Resource from '@/models/Resource';
+
+import { connectDB } from '@/lib/mongodb';
+import { auth } from '@/auth';
+
+//COURSES
+export async function getCourses() {
+  await connectDB(); //wait for the database connection
+  const session = await auth(); //get the logged-in user session
+
+  //Make sure there is a logged-in user
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+  //Find courses belonging to the logged-in user
+  //Build this once the two models are resolved and merged
+}
+
+export async function getCourseById(courseId: string) {
+  await connectDB();
+  const session = await auth(); //get the logged-in user session
+
+  //Make sure there is a logged-in user
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+  //Find the course by ID and belonging to the logged-in user
+  //Build this once the two models are resolved and merged
+}
+
+//ASSIGNMENTS
+//Get all assignments
+//NOTE: this returns all assignments including completed ones, this will need to be handled on specific pages (like the dashboard) to only show incomplete assignments
+export async function getAssignments() {
+  await connectDB();
+  const session = await auth(); //get the logged-in user session
+
+  //Make sure there is a logged-in user
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+  //Find assignments belonging to the logged-in user
+  const assignments = await Assignment.find({
+    userId: session.user.id,
+  });
+
+  //Sort assignments by due date, with assignments that don't have a due date last
+  assignments.sort((a, b) => {
+    if (!a.dueDate && !b.dueDate) return 0; //if neither have a due date, keep the order the same
+    if (!a.dueDate) return 1; //if a doesn't have a due date, put it after b
+    if (!b.dueDate) return -1; //if b doesn't have a due date, put it after a
+    return a.dueDate.getTime() - b.dueDate.getTime(); //sort by due date
+  });
+
+  return assignments;
+}
+
+//Get one assignment
+export async function getAssignmentById(assignmentId: string) {
+  await connectDB();
+  const session = await auth(); //get the logged-in user session
+
+  //Make sure there is a logged-in user
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+  //Find the assignment by ID and belonging to the logged-in user
+  const assignment = await Assignment.findOne({
+    _id: assignmentId,
+    userId: session.user.id,
+  });
+
+  if (!assignment) {
+    throw new Error('Assignment not found');
+  }
+
+  return assignment;
+}
+
+//RESOURCES
+export async function getResources() {
+  await connectDB();
+  const session = await auth(); //get the logged-in user session
+
+  //Make sure there is a logged-in user
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+  //Find resources belonging to the logged-in user
+  const resources = await Resource.find({
+    userId: session.user.id,
+  });
+
+  //Sort resources by type in the following order: link, note, file
+  const typeOrder = { link: 1, note: 2, file: 3 };
+  resources.sort((a, b) => {
+    return typeOrder[a.type] - typeOrder[b.type];
+  });
+
+  return resources;
+}
+
+//TODO: updateResourceAccess function to update the date of when a resource was last accessed. This will be used on the dashboard.
+
+
+//TODO: Functions pulling data from inputs on courses, assignments, and resources pages to create new records in the database.
