@@ -2,6 +2,7 @@
 // import Course from '@/models/Course';
 import Assignment from '@/models/Assignment';
 import Resource from '@/models/Resource';
+import { AssignmentInput } from '@/types/models';
 
 import { connectDB } from '@/lib/mongodb';
 import { auth } from '@/auth';
@@ -83,6 +84,87 @@ export async function getAssignmentById(assignmentId: string) {
 
   return assignment;
 }
+
+//Create new assignment
+export async function addAssignment(data: AssignmentInput) {
+  await connectDB();
+    const session = await auth(); //get the logged-in user session
+    //Make sure there is a logged-in user
+    if (!session?.user?.id) {
+        throw new Error('User not authenticated');
+    }
+
+    //Create the new assignment
+    const assignment = await Assignment.create({
+      userId: session.user.id,
+      courseId: data.courseId,
+      title: data.title,
+      description: data.description,
+      dueDate: data.dueDate,
+      completed: data.completed,
+    });
+
+    //Returns values from database (including id, createdAt, updatedAt), although not currently used in the actions.ts file, but could be useful in the future
+    return assignment;
+}
+
+//Update assignment
+export async function updateAssignment(assignmentId: string, data: AssignmentInput) {
+  await connectDB();
+    const session = await auth(); //get the logged-in user session
+    //Make sure there is a logged-in user
+    if (!session?.user?.id) {
+        throw new Error('User not authenticated');
+    }
+    
+    //Find the assignment by ID and belonging to the logged-in user
+    const assignment = await Assignment.findOneAndUpdate(
+        { _id: assignmentId, userId: session.user.id },
+        {
+            courseId: data.courseId,
+            title: data.title,
+            description: data.description,
+            dueDate: data.dueDate,
+            completed: data.completed,
+        },
+        { new: true, runValidators: true } //return the updated document, runValidators ensures that the data is validated against the schema
+    );
+    
+    //Check if assignment exists
+    if (!assignment) {
+        throw new Error('Assignment not found');
+    }
+    
+    //Returns values from database (including id, createdAt, updatedAt), although not currently used in the actions.ts file, but could be useful in the future
+    return assignment;
+}
+
+//Delete assignment
+export async function deleteAssignment(assignmentId: string) {
+  await connectDB();
+
+  const session = await auth(); //get the logged-in user session
+
+  //Make sure there is a logged-in user
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+    //Find and delete the assignment
+    const assignment = await Assignment.findOneAndDelete({
+      _id: assignmentId,
+      userId: session.user.id
+    });
+
+    //Check if assignment exists
+    if (!assignment) {
+      throw new Error('Assignment not found');
+    }
+
+    //Returns values from database that were deleted
+    return assignment;
+  }
+
 
 //RESOURCES
 export async function getResources() {
