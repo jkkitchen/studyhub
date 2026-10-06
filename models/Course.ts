@@ -1,12 +1,12 @@
-import mongoose, { Document, Model, Schema, Types } from 'mongoose';
+import mongoose, { Document, Model, Schema } from 'mongoose';
 
 export interface ICourse extends Document {
   userId: string; // the id of the user who owns this course (text)
   name: string; // course name, always present
-  code?: string; // "?" means optional: a course may have no code
-  description: string; // always present, but can be an empty string
-  created: Date; // added automatically by "timestamps: true" below
-  update: Date; // also added automatically, changes on every update
+  code: string; // course code, always present
+  description?: string; // optional, but can be an empty string
+  createdAt: Date; // added automatically by "timestamps: true" below
+  updatedAt: Date; // also added automatically, changes on every update
 }
 
 // Create the runtime blueprint. <ICourse> links it to the interface above,
@@ -26,6 +26,7 @@ const CourseSchema = new Schema<ICourse>(
     },
     code: {
       type: String,
+      required: true,
       trim: true,
       uppercase: true, // uppercase: true = "cs101" is saved as "CS101"
     },

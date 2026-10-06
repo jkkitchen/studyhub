@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
-// import { connectToDatabase } from '@/lib/mongodb';  We will import it when the database has been fully setup well
-import Course from '@/lib/models/Course'; 
+import { connectDB } from '@/lib/mongodb';
+import Course from '@/models/Course'; 
 
 export async function GET() {
   try {
@@ -11,7 +11,8 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // await connectToDatabase(); Also needs connection from the database to work
+    //Connect to the database
+    await connectDB(); 
 
     const courses = await Course.find({ userId: session.user.id }).sort({
       createdAt: -1,
@@ -52,13 +53,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // await connectToDatabase(); Also requires proper database setup
+    //Connect to the database
+    await connectDB();
 
     const course = await Course.create({
       userId: session.user.id,
       name: name.trim(),
       code: code.trim(),
-      description: description?.trim() ?? '',
+      description: typeof description === 'string' ? description.trim() : '', //if a string, trim and save; if it is missing or isn't a string, save as an empty string
     });
 
     return NextResponse.json({ course }, { status: 201 });
