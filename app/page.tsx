@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { getCourses, getAssignments, getResources } from '@/lib/db';
 import AssignmentCard from '@/components/AssignmentCard';
 import ResourceCard from '@/components/ResourceCard';
+import CourseCard from '@/components/CourseCard';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -22,7 +23,7 @@ export default async function DashboardPage() {
   }
 
   //DATA FETCHING
-  const courses = await getCourses();
+  const courses = (await getCourses()).slice(0, 4); //only show the first 4 courses on the dashboard
   const assignments = (await getAssignments())
     .filter((assignment) => !assignment.completed) //only shows incomplete assignments on the dashboard
     .slice(0,4); //only show the first 4 assignments on the dashboard
@@ -85,34 +86,9 @@ export default async function DashboardPage() {
           </a>
         </div>
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-          <div className='rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-primary bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <span className='inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary-light text-sm font-bold text-primary'>
-              C1
-            </span>
-            <p className='mt-3 font-semibold text-dark-text'>Course Name 1</p>
-            <p className='text-sm text-muted'>Instructor Name</p>
-          </div>
-          <div className='rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-accent bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <span className='inline-flex h-9 w-9 items-center justify-center rounded-lg bg-accent-light text-sm font-bold text-accent'>
-              C2
-            </span>
-            <p className='mt-3 font-semibold text-dark-text'>Course Name 2</p>
-            <p className='text-sm text-muted'>Instructor Name</p>
-          </div>
-          <div className='rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-primary bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <span className='inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary-light text-sm font-bold text-primary'>
-              C3
-            </span>
-            <p className='mt-3 font-semibold text-dark-text'>Course Name 3</p>
-            <p className='text-sm text-muted'>Instructor Name</p>
-          </div>
-          <div className='rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-accent bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <span className='inline-flex h-9 w-9 items-center justify-center rounded-lg bg-accent-light text-sm font-bold text-accent'>
-              C4
-            </span>
-            <p className='mt-3 font-semibold text-dark-text'>Course Name 4</p>
-            <p className='text-sm text-muted'>Instructor Name</p>
-          </div>
+          {courses.map((course) => (
+            <CourseCard key={course._id.toString()} course={course} />
+          ))}
         </div>
       </section>
 

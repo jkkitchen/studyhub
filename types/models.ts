@@ -32,3 +32,21 @@ export interface CourseInput {
   code: string;
   description?: string;
 }
+
+export interface Resource {
+  _id: string;
+  userId: string;
+  courseId: string;
+  title: string;
+  type: 'link' | 'note' | 'file';
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ResourceInput {
+  courseId: string;
+  title: string;
+  type: 'link' | 'note' | 'file';
+  content: string;
+}

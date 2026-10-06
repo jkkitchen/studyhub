@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { addAssignmentAction, updateAssignmentAction, type State } from '@/lib/actions';
+import { addAssignmentAction, updateAssignmentAction, type AssignmentState } from '@/lib/actions';
 import { Assignment, Course } from '@/types/models';
 
 interface AssignmentFormProps {
@@ -16,7 +16,7 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
     ? updateAssignmentAction.bind(null, assignment._id)
     : addAssignmentAction;
 
-  const initialState: State = {
+  const initialState: AssignmentState = {
     errors: {},
     message: null,
   };
