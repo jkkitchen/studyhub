@@ -30,7 +30,9 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
     <form action={formAction} className='flex flex-col gap-4'>
       {/*Assignment Title*/}
       <div>
-        <label htmlFor='title'>Assignment Title</label>
+        <label htmlFor='title' className='block font-medium mb-1'>
+          Assignment Title
+        </label>
         <input
           id='title'
           name='title'
@@ -38,6 +40,7 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
           defaultValue={assignment?.title ?? ''}
           required
           aria-describedby='title-error'
+          className='w-full border rounded p-2'
         />
       </div>
       <div id='title-error' aria-live='polite'>
@@ -50,13 +53,16 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
 
       {/*Assignment Description*/}
       <div>
-        <label htmlFor='description'>Assignment Description</label>
+        <label htmlFor='description' className='block font-medium mb-1'>
+          Assignment Description
+        </label>
         <textarea
           id='description'
           name='description'
           defaultValue={assignment?.description ?? ''}
           required
           aria-describedby='description-error'
+          className='w-full border rounded p-2'
         />
       </div>
       <div id='description-error' aria-live='polite'>
@@ -135,7 +141,11 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
         <label htmlFor='completed'>Completed</label>
       </div>
 
-      <button type='submit' disabled={isPending}>
+      <button
+        type='submit'
+        disabled={isPending}
+        className='rounded-lg bg-green-700 px-4 py-2 font-semibold text-white hover:bg-green-800 disabled:opacity-50'
+      >
         {isPending
           ? 'Saving...'
           : assignment

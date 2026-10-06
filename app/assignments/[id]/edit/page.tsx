@@ -10,8 +10,8 @@ interface EditAssignmentPageProps {
 
 export default async function EditAssignmentPage({
   params,
-}: EditAssignmentPageProps) {
-  const { id } = await params;
+}: EditAssignmentPageProps) { //Pull params out of the page props
+  const { id } = await params; //Pull id out of the params
 
   //Retrieve the assignment document (Mongoose document) from the database using the id from the URL params, and retrieve the list of courses for the dropdown
   const assignmentDoc = await getAssignmentById(id);
@@ -30,7 +30,7 @@ export default async function EditAssignmentPage({
     updatedAt: assignmentDoc.updatedAt.toISOString(),
   };
 
-  //Create plain course objects from the Mongoose documents to pass to the AssignmentForm component
+  //Create plain course object from the Mongoose document to pass to the AssignmentForm component
   const courses = coursesDoc.map((course) => ({
     _id: course._id.toString(),
     userId: course.userId,

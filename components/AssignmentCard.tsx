@@ -2,12 +2,16 @@ import type { IAssignment } from '@/models/Assignment';
 
 interface AssignmentCardProps {
   assignment: IAssignment;
+  courseCode: string; //This way we can pull the course code from the allCourses variable on the dashboard page and have it display in the assignment card
 }
 
 //NOTE: Will need to update Course Name and Due Date once the two Course models are resolved and merged
-export default function AssignmentCard({ assignment }: AssignmentCardProps) {
+export default function AssignmentCard({
+  assignment,
+  courseCode,
+}: AssignmentCardProps) {
   //Format the due date for display
-    let formattedDueDate;   
+  let formattedDueDate;
   //Becasue due date is optional we need to check if it exists before formatting it
   if (!assignment.dueDate) {
     formattedDueDate = 'No due date';
@@ -26,7 +30,7 @@ export default function AssignmentCard({ assignment }: AssignmentCardProps) {
         <div>
           <p className='font-semibold text-dark-text'>{assignment.title}</p>
 
-          <p className='text-sm text-muted'>Course Name</p>
+                  <p className='text-sm text-muted'>{courseCode}</p>
         </div>
       </div>
 

@@ -265,7 +265,6 @@ export async function deleteAssignment(assignmentId: string) {
 //-----------------------------------------------------------------------
 
 //RESOURCES
-//Note: Don't need a getResourceById function because they won't be displayed on an individual page
 //Get all resources
 export async function getResources() {
   await connectDB();
@@ -279,16 +278,35 @@ export async function getResources() {
   //Find resources belonging to the logged-in user
   const resources = await Resource.find({
     userId: session.user.id,
-  });
-
-  //Sort resources by type in the following order: link, note, file
-  const typeOrder = { link: 1, note: 2, file: 3 };
-  resources.sort((a, b) => {
-    return typeOrder[a.type] - typeOrder[b.type];
-  });
+  }).sort({ createdAt: -1 }); //Put in order of when they were created with the most recent at the top
 
   return resources;
 }
+
+
+//Get one resource (used on the edit resource form)
+export async function getResourceById(resourceId: string) {
+  await connectDB();
+  const session = await auth(); //get the logged-in user session
+
+  //Make sure there is a logged-in user
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+  //Find the resource by ID and belonging to the logged-in user
+  const resource = await Resource.findOne({
+    _id: resourceId,
+    userId: session.user.id,
+  });
+
+  if (!resource) {
+    throw new Error('Resource not found');
+  }
+
+  return resource;
+}
+
 
 //Add new resource
 export async function addResource(data: ResourceInput) {
@@ -369,4 +387,4 @@ export async function deleteResource(resourceId: string) {
   return resource;
 }
 
-//TODO: updateResourceAccess function to update the date of when a resource was last accessed. This will be used on the dashboard.
+

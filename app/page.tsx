@@ -23,11 +23,12 @@ export default async function DashboardPage() {
   }
 
   //DATA FETCHING
-  const courses = (await getCourses()).slice(0, 4); //only show the first 4 courses on the dashboard
+  const allCourses = (await getCourses()); //need all courses available on this page so assignments can call the course code from this
+  const courses = allCourses.slice(0, 4); //only display the first 4 courses (will be in alphabetical order right now)
   const assignments = (await getAssignments())
     .filter((assignment) => !assignment.completed) //only shows incomplete assignments on the dashboard
     .slice(0,4); //only show the first 4 assignments on the dashboard
-  const resources = await getResources();
+  const resources = (await getResources()).slice(0,4); //only display 4 resources (will show 4 most recently created resources)
 
   //PAGE CONTENT
   //Build the courses section once the two models are resolved and merged
@@ -106,12 +107,20 @@ export default async function DashboardPage() {
           </a>
         </div>
         <div className='flex flex-col gap-3'>
-          {assignments.map((assignment) => (
-            <AssignmentCard
-              key={assignment._id.toString()}
-              assignment={assignment}
-            />
-          ))}
+          {assignments.map((assignment) => {
+            const course = allCourses.find(
+              (course) =>
+                course._id.toString() === assignment.courseId.toString()
+            );
+
+            return (
+              <AssignmentCard
+                key={assignment._id.toString()}
+                assignment={assignment}
+                courseCode={course?.code ?? 'Unknown Course'}
+              />
+            );
+          })}
         </div>
       </section>
 
@@ -129,9 +138,19 @@ export default async function DashboardPage() {
           </a>
         </div>
         <div className='flex flex-col gap-3'>
-          {resources.map((resource) => (
-            <ResourceCard key={resource._id.toString()} resource={resource} />
-          ))}
+          {resources.map((resource) => {
+            const course = allCourses.find(
+              (course) => course._id.toString() === resource.courseId.toString()
+            );
+
+            return (
+              <ResourceCard
+                key={resource._id.toString()}
+                resource={resource}
+                courseCode={course?.code ?? 'Unknown Course'}
+              />
+            );
+          })}
         </div>
       </section>
     </main>
