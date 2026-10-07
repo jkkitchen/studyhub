@@ -73,6 +73,8 @@ export default async function DashboardPage() {
         </div>
       </section>
 
+
+
       {/* Section 2: Courses */}
       <section>
         <div className='mb-4 flex items-center justify-between'>
@@ -92,6 +94,8 @@ export default async function DashboardPage() {
           ))}
         </div>
       </section>
+
+
 
       {/* Section 3: Assignments */}
       <section>
@@ -123,6 +127,8 @@ export default async function DashboardPage() {
           })}
         </div>
       </section>
+
+
 
       {/* Section 4: Resources */}
       <section>
