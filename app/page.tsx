@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { auth } from '@/auth';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -7,7 +8,16 @@ export const metadata: Metadata = {
 
 
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const session = await auth();
+  const emailUsername = session?.user?.email
+    ?.split('@')[0]
+    ?.replace(/[._-]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+  const userName = session?.user?.name?.trim() || emailUsername || 'there';
+
   return (
     <main className='flex-1 mx-auto flex max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 sm:py-10'>
       {/* Section 1: Welcome + search */}
@@ -16,7 +26,7 @@ export default function DashboardPage() {
           <div className='flex items-center gap-4'>
             <div>
               <h1 className='text-2xl font-bold tracking-tight text-dark-text sm:text-3xl'>
-                Welcome back, <span className='text-primary'>[User Name]</span>!
+                Welcome back, <span className='text-primary'>{userName}</span>!
               </h1>
               <p className='mt-1 text-sm text-muted sm:text-base'>
                 Here&apos;s what&apos;s on your plate.
