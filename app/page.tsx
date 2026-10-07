@@ -13,17 +13,18 @@ export const metadata: Metadata = {
 
 
 export default async function DashboardPage() {
-  //USER AUTHENTICATION
-  //Get the user session data from auth
   const session = await auth();
-  //Check if the user is authenticated (they shouldn't be able to reach this page without logging in but TypeScript is complaining about session possibly being null)
   if (!session?.user) {
-    //redirect to the login page if not authenticated
     redirect('/login');
   }
 
-export default async function DashboardPage() {
-  const session = await auth();
+  const [courses, assignments, resources] = await Promise.all([
+    getCourses(),
+    getAssignments(),
+    getResources(),
+  ]);
+  const allCourses = courses;
+
   const emailUsername = session?.user?.email
     ?.split('@')[0]
     ?.replace(/[._-]+/g, ' ')
