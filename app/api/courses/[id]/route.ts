@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
-// import { connectToDatabase } from '@/lib/mongodb'; will import it when database is setup well
-import Course from '@/lib/models/Course';
+import { connectDB } from '@/lib/mongodb';
+import Course from '@/models/Course';
 
 interface RouteContext {
   params: Promise<{ id: string }>;
@@ -16,7 +16,9 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     }
 
     const { id } = await context.params;
-    // await connectToDatabase();   requires proper database setup
+    
+    //Connect to the database
+    await connectDB();
 
     const course = await Course.findOne({
       _id: id,
@@ -55,7 +57,8 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     if (typeof description === 'string')
       update.description = description.trim();
 
-    // await connectToDatabase();   requires proper database setup
+    //Connect to the database
+    await connectDB();
 
     const course = await Course.findOneAndUpdate(
       { _id: id, userId: session.user.id },
@@ -86,7 +89,9 @@ export async function DELETE(_request: NextRequest, context: RouteContext) {
     }
 
     const { id } = await context.params;
-    // await connectToDatabase();   requires proper database setup
+    
+    //Connect to the database
+    await connectDB();
 
     const course = await Course.findOneAndDelete({
       _id: id,
