@@ -69,28 +69,28 @@ export default function DashboardPage() {
               C1
             </span>
             <p className='mt-3 font-semibold text-dark-text'>Course Name 1</p>
-            <p className='text-sm text-muted'>Instructor Name</p>
+            <p className='text-sm text-muted'>Description Name</p>
           </div>
           <div className='rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-accent bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
             <span className='inline-flex h-9 w-9 items-center justify-center rounded-lg bg-accent-light text-sm font-bold text-accent'>
               C2
             </span>
             <p className='mt-3 font-semibold text-dark-text'>Course Name 2</p>
-            <p className='text-sm text-muted'>Instructor Name</p>
+            <p className='text-sm text-muted'>Description Name</p>
           </div>
           <div className='rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-primary bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
             <span className='inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary-light text-sm font-bold text-primary'>
               C3
             </span>
             <p className='mt-3 font-semibold text-dark-text'>Course Name 3</p>
-            <p className='text-sm text-muted'>Instructor Name</p>
+            <p className='text-sm text-muted'>Description Name</p>
           </div>
           <div className='rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-accent bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
             <span className='inline-flex h-9 w-9 items-center justify-center rounded-lg bg-accent-light text-sm font-bold text-accent'>
               C4
             </span>
             <p className='mt-3 font-semibold text-dark-text'>Course Name 4</p>
-            <p className='text-sm text-muted'>Instructor Name</p>
+            <p className='text-sm text-muted'>Description Name</p>
           </div>
         </div>
       </section>

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 
 
@@ -23,15 +24,15 @@ export default function CoursesPage() {
         </div>
 
         {/* Placeholder only — not wired up yet */}
-        <button
-          type="button"
+        <Link
+          href="/courses/create"
           className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
         >
           <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 5v14M5 12h14" />
           </svg>
           Add Course
-        </button>
+        </Link>
       </div>
 
       {/* Courses grid */}
@@ -46,21 +47,31 @@ export default function CoursesPage() {
             </span>
           </div>
           <p className="mt-3 text-base font-semibold text-dark-text">Course Name 1</p>
-          <p className="mt-0.5 text-sm text-muted">Instructor Name</p>
-          <div className="mt-4 flex items-center gap-4 border-t-2 border-stone-100 pt-3 text-xs font-medium text-muted">
-            <span className="flex items-center gap-1.5">
+          <p className="mt-1.5 text-sm text-muted">
+            A short description of what this course covers goes here.
+          </p>
+          <div className="mt-4 flex items-center justify-between border-t-2 border-stone-100 pt-3">
+            <Link
+              href="/courses/1"
+              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-primary transition-colors hover:bg-primary-light hover:text-primary-hover"
+            >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 11l3 3L22 4" />
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
               </svg>
-              3 assignments
-            </span>
-            <span className="flex items-center gap-1.5">
+              Edit
+            </Link>
+            {/* Placeholder only — delete isn't wired up yet */}
+            <button
+              type="button"
+              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-danger transition-colors hover:bg-danger-light"
+            >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z" />
+                <path d="M3 6h18" />
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6h16Z" />
               </svg>
-              5 resources
-            </span>
+              Delete
+            </button>
           </div>
         </div>
 
@@ -74,21 +85,31 @@ export default function CoursesPage() {
             </span>
           </div>
           <p className="mt-3 text-base font-semibold text-dark-text">Course Name 2</p>
-          <p className="mt-0.5 text-sm text-muted">Instructor Name</p>
-          <div className="mt-4 flex items-center gap-4 border-t-2 border-stone-100 pt-3 text-xs font-medium text-muted">
-            <span className="flex items-center gap-1.5">
+          <p className="mt-1.5 text-sm text-muted">
+            A short description of what this course covers goes here.
+          </p>
+          <div className="mt-4 flex items-center justify-between border-t-2 border-stone-100 pt-3">
+            <Link
+              href="/courses/2"
+              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-primary transition-colors hover:bg-primary-light hover:text-primary-hover"
+            >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 11l3 3L22 4" />
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
               </svg>
-              1 assignment
-            </span>
-            <span className="flex items-center gap-1.5">
+              Edit
+            </Link>
+            {/* Placeholder only — delete isn't wired up yet */}
+            <button
+              type="button"
+              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-danger transition-colors hover:bg-danger-light"
+            >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z" />
+                <path d="M3 6h18" />
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6h16Z" />
               </svg>
-              2 resources
-            </span>
+              Delete
+            </button>
           </div>
         </div>
 
@@ -102,21 +123,31 @@ export default function CoursesPage() {
             </span>
           </div>
           <p className="mt-3 text-base font-semibold text-dark-text">Course Name 3</p>
-          <p className="mt-0.5 text-sm text-muted">Instructor Name</p>
-          <div className="mt-4 flex items-center gap-4 border-t-2 border-stone-100 pt-3 text-xs font-medium text-muted">
-            <span className="flex items-center gap-1.5">
+          <p className="mt-1.5 text-sm text-muted">
+            A short description of what this course covers goes here.
+          </p>
+          <div className="mt-4 flex items-center justify-between border-t-2 border-stone-100 pt-3">
+            <Link
+              href="/courses/3"
+              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-primary transition-colors hover:bg-primary-light hover:text-primary-hover"
+            >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 11l3 3L22 4" />
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
               </svg>
-              4 assignments
-            </span>
-            <span className="flex items-center gap-1.5">
+              Edit
+            </Link>
+            {/* Placeholder only — delete isn't wired up yet */}
+            <button
+              type="button"
+              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-danger transition-colors hover:bg-danger-light"
+            >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z" />
+                <path d="M3 6h18" />
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6h16Z" />
               </svg>
-              3 resources
-            </span>
+              Delete
+            </button>
           </div>
         </div>
 
@@ -130,21 +161,31 @@ export default function CoursesPage() {
             </span>
           </div>
           <p className="mt-3 text-base font-semibold text-dark-text">Course Name 4</p>
-          <p className="mt-0.5 text-sm text-muted">Instructor Name</p>
-          <div className="mt-4 flex items-center gap-4 border-t-2 border-stone-100 pt-3 text-xs font-medium text-muted">
-            <span className="flex items-center gap-1.5">
+          <p className="mt-1.5 text-sm text-muted">
+            A short description of what this course covers goes here.
+          </p>
+          <div className="mt-4 flex items-center justify-between border-t-2 border-stone-100 pt-3">
+            <Link
+              href="/courses/4"
+              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-primary transition-colors hover:bg-primary-light hover:text-primary-hover"
+            >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 11l3 3L22 4" />
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
               </svg>
-              2 assignments
-            </span>
-            <span className="flex items-center gap-1.5">
+              Edit
+            </Link>
+            {/* Placeholder only — delete isn't wired up yet */}
+            <button
+              type="button"
+              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-danger transition-colors hover:bg-danger-light"
+            >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z" />
+                <path d="M3 6h18" />
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6h16Z" />
               </svg>
-              6 resources
-            </span>
+              Delete
+            </button>
           </div>
         </div>
 
@@ -158,21 +199,31 @@ export default function CoursesPage() {
             </span>
           </div>
           <p className="mt-3 text-base font-semibold text-dark-text">Course Name 5</p>
-          <p className="mt-0.5 text-sm text-muted">Instructor Name</p>
-          <div className="mt-4 flex items-center gap-4 border-t-2 border-stone-100 pt-3 text-xs font-medium text-muted">
-            <span className="flex items-center gap-1.5">
+          <p className="mt-1.5 text-sm text-muted">
+            A short description of what this course covers goes here.
+          </p>
+          <div className="mt-4 flex items-center justify-between border-t-2 border-stone-100 pt-3">
+            <Link
+              href="/courses/5"
+              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-primary transition-colors hover:bg-primary-light hover:text-primary-hover"
+            >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 11l3 3L22 4" />
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
               </svg>
-              0 assignments
-            </span>
-            <span className="flex items-center gap-1.5">
+              Edit
+            </Link>
+            {/* Placeholder only — delete isn't wired up yet */}
+            <button
+              type="button"
+              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-danger transition-colors hover:bg-danger-light"
+            >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z" />
+                <path d="M3 6h18" />
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6h16Z" />
               </svg>
-              4 resources
-            </span>
+              Delete
+            </button>
           </div>
         </div>
 
@@ -186,21 +237,31 @@ export default function CoursesPage() {
             </span>
           </div>
           <p className="mt-3 text-base font-semibold text-dark-text">Course Name 6</p>
-          <p className="mt-0.5 text-sm text-muted">Instructor Name</p>
-          <div className="mt-4 flex items-center gap-4 border-t-2 border-stone-100 pt-3 text-xs font-medium text-muted">
-            <span className="flex items-center gap-1.5">
+          <p className="mt-1.5 text-sm text-muted">
+            A short description of what this course covers goes here.
+          </p>
+          <div className="mt-4 flex items-center justify-between border-t-2 border-stone-100 pt-3">
+            <Link
+              href="/courses/6"
+              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-primary transition-colors hover:bg-primary-light hover:text-primary-hover"
+            >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 11l3 3L22 4" />
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
               </svg>
-              2 assignments
-            </span>
-            <span className="flex items-center gap-1.5">
+              Edit
+            </Link>
+            {/* Placeholder only — delete isn't wired up yet */}
+            <button
+              type="button"
+              className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-danger transition-colors hover:bg-danger-light"
+            >
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z" />
+                <path d="M3 6h18" />
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6h16Z" />
               </svg>
-              1 resource
-            </span>
+              Delete
+            </button>
           </div>
         </div>
       </div>
