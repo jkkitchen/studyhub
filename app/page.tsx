@@ -1,4 +1,10 @@
 import type { Metadata } from 'next';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
+import { getCourses, getAssignments, getResources } from '@/lib/db';
+import AssignmentCard from '@/components/AssignmentCard';
+import ResourceCard from '@/components/ResourceCard';
+import CourseCard from '@/components/CourseCard';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -6,8 +12,26 @@ export const metadata: Metadata = {
 };
 
 
+export default async function DashboardPage() {
+  //USER AUTHENTICATION
+  //Get the user session data from auth
+  const session = await auth();
+  //Check if the user is authenticated (they shouldn't be able to reach this page without logging in but TypeScript is complaining about session possibly being null)
+  if (!session?.user) {
+    //redirect to the login page if not authenticated
+    redirect('/login');
+  }
 
-export default function DashboardPage() {
+  //DATA FETCHING
+  const allCourses = (await getCourses()); //need all courses available on this page so assignments can call the course code from this
+  const courses = allCourses.slice(0, 4); //only display the first 4 courses (will be in alphabetical order right now)
+  const assignments = (await getAssignments())
+    .filter((assignment) => !assignment.completed) //only shows incomplete assignments on the dashboard
+    .slice(0,4); //only show the first 4 assignments on the dashboard
+  const resources = (await getResources()).slice(0,4); //only display 4 resources (will show 4 most recently created resources)
+
+  //PAGE CONTENT
+  //Build the courses section once the two models are resolved and merged
   return (
     <main className='flex-1 mx-auto flex max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 sm:py-10'>
       {/* Section 1: Welcome + search */}
@@ -16,7 +40,8 @@ export default function DashboardPage() {
           <div className='flex items-center gap-4'>
             <div>
               <h1 className='text-2xl font-bold tracking-tight text-dark-text sm:text-3xl'>
-                Welcome back, <span className='text-primary'>[User Name]</span>!
+                Welcome back,{' '}
+                <span className='text-primary'>{session.user.name}</span>!
               </h1>
               <p className='mt-1 text-sm text-muted sm:text-base'>
                 Here&apos;s what&apos;s on your plate.
@@ -64,34 +89,9 @@ export default function DashboardPage() {
           </a>
         </div>
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
-          <div className='rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-primary bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <span className='inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary-light text-sm font-bold text-primary'>
-              C1
-            </span>
-            <p className='mt-3 font-semibold text-dark-text'>Course Name 1</p>
-            <p className='text-sm text-muted'>Description Name</p>
-          </div>
-          <div className='rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-accent bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <span className='inline-flex h-9 w-9 items-center justify-center rounded-lg bg-accent-light text-sm font-bold text-accent'>
-              C2
-            </span>
-            <p className='mt-3 font-semibold text-dark-text'>Course Name 2</p>
-            <p className='text-sm text-muted'>Description Name</p>
-          </div>
-          <div className='rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-primary bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <span className='inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary-light text-sm font-bold text-primary'>
-              C3
-            </span>
-            <p className='mt-3 font-semibold text-dark-text'>Course Name 3</p>
-            <p className='text-sm text-muted'>Description Name</p>
-          </div>
-          <div className='rounded-2xl border-2 border-l-[6px] border-stone-200 border-l-accent bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <span className='inline-flex h-9 w-9 items-center justify-center rounded-lg bg-accent-light text-sm font-bold text-accent'>
-              C4
-            </span>
-            <p className='mt-3 font-semibold text-dark-text'>Course Name 4</p>
-            <p className='text-sm text-muted'>Description Name</p>
-          </div>
+          {courses.map((course) => (
+            <CourseCard key={course._id.toString()} course={course} />
+          ))}
         </div>
       </section>
 
@@ -111,74 +111,20 @@ export default function DashboardPage() {
           </a>
         </div>
         <div className='flex flex-col gap-3'>
-          <div className='flex items-center justify-between gap-4 rounded-2xl border-2 border-stone-200 bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <div className='flex items-center gap-4'>
-              <span
-                aria-hidden='true'
-                className='h-2.5 w-2.5 shrink-0 rounded-full bg-danger'
+          {assignments.map((assignment) => {
+            const course = allCourses.find(
+              (course) =>
+                course._id.toString() === assignment.courseId.toString()
+            );
+
+            return (
+              <AssignmentCard
+                key={assignment._id.toString()}
+                assignment={assignment}
+                courseCode={course?.code ?? 'Unknown Course'}
               />
-              <div>
-                <p className='font-semibold text-dark-text'>
-                  Assignment Name 1
-                </p>
-                <p className='text-sm text-muted'>Course Name</p>
-              </div>
-            </div>
-            <span className='shrink-0 rounded-full bg-danger-light px-3 py-1.5 text-xs font-semibold text-danger'>
-              Due soonest
-            </span>
-          </div>
-          <div className='flex items-center justify-between gap-4 rounded-2xl border-2 border-stone-200 bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <div className='flex items-center gap-4'>
-              <span
-                aria-hidden='true'
-                className='h-2.5 w-2.5 shrink-0 rounded-full bg-accent'
-              />
-              <div>
-                <p className='font-semibold text-dark-text'>
-                  Assignment Name 2
-                </p>
-                <p className='text-sm text-muted'>Course Name</p>
-              </div>
-            </div>
-            <span className='shrink-0 rounded-full bg-accent-light px-3 py-1.5 text-xs font-semibold text-primary-hover'>
-              Due date
-            </span>
-          </div>
-          <div className='flex items-center justify-between gap-4 rounded-2xl border-2 border-stone-200 bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <div className='flex items-center gap-4'>
-              <span
-                aria-hidden='true'
-                className='h-2.5 w-2.5 shrink-0 rounded-full bg-primary'
-              />
-              <div>
-                <p className='font-semibold text-dark-text'>
-                  Assignment Name 3
-                </p>
-                <p className='text-sm text-muted'>Course Name</p>
-              </div>
-            </div>
-            <span className='shrink-0 rounded-full bg-primary-light px-3 py-1.5 text-xs font-semibold text-primary-hover'>
-              Due date
-            </span>
-          </div>
-          <div className='flex items-center justify-between gap-4 rounded-2xl border-2 border-stone-200 bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <div className='flex items-center gap-4'>
-              <span
-                aria-hidden='true'
-                className='h-2.5 w-2.5 shrink-0 rounded-full bg-primary'
-              />
-              <div>
-                <p className='font-semibold text-dark-text'>
-                  Assignment Name 4
-                </p>
-                <p className='text-sm text-muted'>Course Name</p>
-              </div>
-            </div>
-            <span className='shrink-0 rounded-full bg-primary-light px-3 py-1.5 text-xs font-semibold text-primary-hover'>
-              Due date
-            </span>
-          </div>
+            );
+          })}
         </div>
       </section>
 
@@ -198,39 +144,19 @@ export default function DashboardPage() {
           </a>
         </div>
         <div className='flex flex-col gap-3'>
-          <div className='flex items-center gap-4 rounded-2xl border-2 border-stone-200 bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <div className='min-w-0 flex-1'>
-              <p className='truncate font-semibold text-dark-text'>
-                Resource Name 1
-              </p>
-              <p className='text-sm text-muted'>Course Name</p>
-            </div>
-            <span className='shrink-0 text-xs font-medium text-subtle'>
-              Accessed recently
-            </span>
-          </div>
-          <div className='flex items-center gap-4 rounded-2xl border-2 border-stone-200 bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <div className='min-w-0 flex-1'>
-              <p className='truncate font-semibold text-dark-text'>
-                Resource Name 2
-              </p>
-              <p className='text-sm text-muted'>Course Name</p>
-            </div>
-            <span className='shrink-0 text-xs font-medium text-subtle'>
-              Accessed earlier
-            </span>
-          </div>
-          <div className='flex items-center gap-4 rounded-2xl border-2 border-stone-200 bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-            <div className='min-w-0 flex-1'>
-              <p className='truncate font-semibold text-dark-text'>
-                Resource Name 3
-              </p>
-              <p className='text-sm text-muted'>Course Name</p>
-            </div>
-            <span className='shrink-0 text-xs font-medium text-subtle'>
-              Accessed earlier
-            </span>
-          </div>
+          {resources.map((resource) => {
+            const course = allCourses.find(
+              (course) => course._id.toString() === resource.courseId.toString()
+            );
+
+            return (
+              <ResourceCard
+                key={resource._id.toString()}
+                resource={resource}
+                courseCode={course?.code ?? 'Unknown Course'}
+              />
+            );
+          })}
         </div>
       </section>
     </main>
