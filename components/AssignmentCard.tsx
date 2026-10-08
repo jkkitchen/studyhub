@@ -1,4 +1,5 @@
 import type { IAssignment } from '@/models/Assignment';
+import Link from 'next/link';
 
 interface AssignmentCardProps {
   assignment: IAssignment;
@@ -20,23 +21,26 @@ export default function AssignmentCard({
   }
 
   return (
-    <div className='flex items-center justify-between gap-4 rounded-2xl border-2 border-stone-200 bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'>
-      <div className='flex items-center gap-4'>
-        <span
-          aria-hidden='true'
-          className='h-2.5 w-2.5 shrink-0 rounded-full bg-primary'
-        />
+    <Link
+      href={`/assignments/${assignment._id.toString()}`}
+      className='flex items-center justify-between gap-4 rounded-2xl border-2 border-stone-200 bg-surface p-5 shadow-sm transition-shadow hover:shadow-md'
+    >      
+        <div className='flex items-center gap-4'>
+          <span
+            aria-hidden='true'
+            className='h-2.5 w-2.5 shrink-0 rounded-full bg-primary'
+          />
 
-        <div>
-          <p className='font-semibold text-dark-text'>{assignment.title}</p>
+          <div>
+            <p className='font-semibold text-dark-text'>{assignment.title}</p>
 
-                  <p className='text-sm text-muted'>{courseCode}</p>
+            <p className='text-sm text-muted'>{courseCode}</p>
+          </div>
         </div>
-      </div>
 
-      <span className='shrink-0 rounded-full bg-primary-light px-3 py-1.5 text-xs font-semibold text-primary-hover'>
-        {formattedDueDate}
-      </span>
-    </div>
+        <span className='shrink-0 rounded-full bg-primary-light px-3 py-1.5 text-xs font-semibold text-primary-hover'>
+          {formattedDueDate}
+        </span>      
+    </Link>
   );
 }
