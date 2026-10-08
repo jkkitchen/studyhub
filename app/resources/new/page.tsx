@@ -1,6 +1,15 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import ResourceForm from '@/components/ResourceForm';
 import { getCourses } from '@/lib/db';
+
+
+
+export const metadata: Metadata = {
+  title: 'New Resource',
+  description: 'Create a new Resource.',
+};
+
 
 export default async function NewResourcePage() {
   //Database query to retrieve the list of courses for the dropdown

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import CourseForm from '@/components/CourseForm';
 import { getCourseById } from '@/lib/db';
@@ -8,6 +9,13 @@ interface EditCoursePageProps {
     id: string;
   }>;
 }
+
+
+export const metadata: Metadata = {
+  title: 'Edit Course',
+  description: 'Update the details of a specific existing course.',
+};
+
 
 export default async function EditCoursePage({ params }: EditCoursePageProps) {
   const { id } = await params;

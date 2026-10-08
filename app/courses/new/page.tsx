@@ -1,5 +1,14 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import CourseForm from '@/components/CourseForm';
+
+
+
+export const metadata: Metadata = {
+  title: 'New Course',
+  description: 'Create a new course.',
+};
+
 
 export default function NewCoursePage() {
   // Page Content

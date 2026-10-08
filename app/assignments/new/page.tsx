@@ -1,6 +1,15 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import AssignmentForm from '@/components/AssignmentForm';
 import { getCourses } from '@/lib/db';
+
+
+
+export const metadata: Metadata = {
+  title: 'New Assignment',
+  description: 'Create a new assignment.',
+};
+
 
 export default async function NewAssignmentPage() {
   //Database query to retrieve the list of courses for the dropdown

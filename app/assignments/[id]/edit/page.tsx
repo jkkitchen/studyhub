@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import AssignmentForm from '@/components/AssignmentForm';
 import { getAssignmentById, getCourses } from '@/lib/db';
@@ -8,6 +9,13 @@ interface EditAssignmentPageProps {
     id: string;
   }>;
 }
+
+
+export const metadata: Metadata = {
+  title: 'Edit Assignment',
+  description: 'Update the details of a specific existing assignment.',
+};
+
 
 export default async function EditAssignmentPage({
   params,

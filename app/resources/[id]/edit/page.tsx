@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import ResourceForm from '@/components/ResourceForm';
 import { getResourceById, getCourses } from '@/lib/db';
@@ -8,6 +9,13 @@ interface EditResourcePageProps {
     id: string;
   }>;
 }
+
+
+export const metadata: Metadata = {
+  title: 'Edit Resource',
+  description: 'Update the details of a specific existing resource.',
+};
+
 
 export default async function EditResourcePage({
   params,
