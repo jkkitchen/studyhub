@@ -4,8 +4,14 @@ import './globals.css';
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { auth } from '@/auth';
+import SignOutButton from '@/components/SignOutButton';
 
+// inside RootLayout, before the return:
+const session = await auth();
 
+// where you render the header:
+<Header signOutButton={session?.user ? <SignOutButton /> : null} />
 
 const nunitoSans = Nunito_Sans({
   variable: '--font-nunito-sans',
