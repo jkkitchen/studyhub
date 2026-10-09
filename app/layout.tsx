@@ -10,9 +10,6 @@ import SignOutButton from '@/components/SignOutButton';
 // inside RootLayout, before the return:
 const session = await auth();
 
-// where you render the header:
-<Header signOutButton={session?.user ? <SignOutButton /> : null} />
-
 const nunitoSans = Nunito_Sans({
   variable: '--font-nunito-sans',
   subsets: ['latin'],
@@ -42,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       className={`${nunitoSans.variable} h-full antialiased`}
     >
       <body className='flex flex-col min-h-dvh'>
-        <Header />
+        <Header signOutButton={session?.user ? <SignOutButton /> : null} />
 
         {children}
 
