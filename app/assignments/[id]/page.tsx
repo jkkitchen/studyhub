@@ -1,6 +1,6 @@
 import { getAssignmentById, getCourseById } from '@/lib/db';
-import { deleteAssignmentAction } from '@/lib/actions';
 import Link from 'next/link';
+import DeleteButton from '@/components/DeleteButton';
 
 //Get Assignment id from the URL params
 interface AssignmentByIdPageProps {
@@ -59,14 +59,7 @@ export default async function AssignmentByIdPage({
             Edit Assignment
           </Link>
 
-          <form action={deleteAssignmentAction.bind(null, id)}>
-            <button
-              type='submit'
-              className='inline-flex items-center justify-center rounded-lg bg-danger px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-danger'
-            >
-              Delete Assignment
-            </button>
-          </form>
+          <DeleteButton id={id} type='assignment' />
         </div>
       </div>
     </main>

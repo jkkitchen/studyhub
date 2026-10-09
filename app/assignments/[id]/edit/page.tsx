@@ -10,7 +10,8 @@ interface EditAssignmentPageProps {
 
 export default async function EditAssignmentPage({
   params,
-}: EditAssignmentPageProps) { //Pull params out of the page props
+}: EditAssignmentPageProps) {
+  //Pull params out of the page props
   const { id } = await params; //Pull id out of the params
 
   //Retrieve the assignment document (Mongoose document) from the database using the id from the URL params, and retrieve the list of courses for the dropdown
@@ -43,9 +44,21 @@ export default async function EditAssignmentPage({
 
   //Page Content
   return (
-    <main>
-      <h1>Edit Assignment</h1>
-      <AssignmentForm assignment={assignment} courses={courses} />
+    <main className='mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 sm:py-10'>
+      {/* Page heading */}
+      <div>
+        <h1 className='text-2xl font-bold tracking-tight text-dark-text sm:text-3xl'>
+          Edit Assignment
+        </h1>
+        <p className='mt-2 text-sm text-muted sm:text-base'>
+          Update your assignment information below.
+        </p>
+      </div>
+
+      {/* Assignment form */}
+      <div className='mx-auto w-full max-w-2xl rounded-2xl border border-stone-200 bg-surface p-6 shadow-sm sm:p-8'>
+        <AssignmentForm assignment={assignment} courses={courses} />
+      </div>
     </main>
   );
 }

@@ -1,5 +1,5 @@
 import { getCourseById, getAssignments, getResources } from '@/lib/db';
-import DeleteCourseButton from '@/components/DeleteCourseButton';
+import DeleteButton from '@/components/DeleteButton';
 import AssignmentCard from '@/components/AssignmentCard';
 import ResourceCard from '@/components/ResourceCard';
 import Link from 'next/link';
@@ -49,7 +49,7 @@ export default async function CourseByIdPage({ params }: CourseByIdPageProps) {
             Edit Course
           </Link>
 
-          <DeleteCourseButton courseId={id} />
+          <DeleteButton id={id} type='course' />
         </div>
       </div>
 
@@ -68,6 +68,7 @@ export default async function CourseByIdPage({ params }: CourseByIdPageProps) {
                 key={assignment._id.toString()}
                 assignment={assignment}
                 courseCode={course.code}
+                showStatus
               />
             ))}
           </div>

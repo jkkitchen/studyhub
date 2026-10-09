@@ -7,6 +7,7 @@ import {
   type ResourceState,
 } from '@/lib/actions';
 import type { Course, Resource } from '@/types/models';
+import Link from 'next/link';
 
 interface ResourceFormProps {
   resource?: Resource;
@@ -33,7 +34,7 @@ export default function ResourceForm({ resource, courses }: ResourceFormProps) {
   //NOTE: For file option, it's currently a textarea. If we want to be able to upload files we will need to change the input type to file
   // and handle the file upload in the action.
   return (
-    <form action={formAction} className='flex flex-col gap-4'>
+    <form action={formAction} className='flex w-full flex-col gap-5'>
       {/* Resource Title */}
       <div>
         <label
@@ -49,7 +50,7 @@ export default function ResourceForm({ resource, courses }: ResourceFormProps) {
           defaultValue={resource?.title ?? ''}
           required
           aria-describedby='title-error'
-          className='w-full rounded-lg border-2 border-stone-200 bg-background px-3 py-2 text-dark-text focus:border-accent focus:outline-none'
+          className='w-full rounded-lg border-2 border-stone-200 bg-background px-3 py-2.5 text-dark-text transition-colors focus:border-primary focus:outline-none'
         />
         <div id='title-error' aria-live='polite'>
           {state.errors?.title?.map((error) => (
@@ -71,7 +72,7 @@ export default function ResourceForm({ resource, courses }: ResourceFormProps) {
           defaultValue={resource?.type ?? ''}
           required
           aria-describedby='type-error'
-          className='w-full rounded-lg border-2 border-stone-200 bg-background px-3 py-2 text-dark-text focus:border-accent focus:outline-none'
+          className='w-full rounded-lg border-2 border-stone-200 bg-background px-3 py-2.5 text-dark-text transition-colors focus:border-primary focus:outline-none'
         >
           <option value='' disabled>
             Select a resource type
@@ -103,7 +104,7 @@ export default function ResourceForm({ resource, courses }: ResourceFormProps) {
           defaultValue={resource?.courseId ?? ''}
           required
           aria-describedby='courseId-error'
-          className='w-full rounded-lg border-2 border-stone-200 bg-background px-3 py-2 text-dark-text focus:border-accent focus:outline-none'
+          className='w-full rounded-lg border-2 border-stone-200 bg-background px-3 py-2.5 text-dark-text transition-colors focus:border-primary focus:outline-none'
         >
           <option value='' disabled>
             Select a course
@@ -139,7 +140,7 @@ export default function ResourceForm({ resource, courses }: ResourceFormProps) {
           rows={4}
           required
           aria-describedby='content-error'
-          className='w-full rounded-lg border-2 border-stone-200 bg-background px-3 py-2 text-dark-text focus:border-accent focus:outline-none'
+          className='w-full rounded-lg border-2 border-stone-200 bg-background px-3 py-2.5 text-dark-text transition-colors focus:border-primary focus:outline-none'
         />
         <div id='content-error' aria-live='polite'>
           {state.errors?.content?.map((error) => (
@@ -157,18 +158,27 @@ export default function ResourceForm({ resource, courses }: ResourceFormProps) {
         </p>
       )}
 
-      {/* Submit */}
-      <button
-        type='submit'
-        disabled={isPending}
-        className='rounded-lg bg-primary px-4 py-2 font-semibold text-white transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50'
-      >
-        {isPending
-          ? 'Saving...'
-          : resource
-            ? 'Update Resource'
-            : 'Create Resource'}
-      </button>
+      {/* Form buttons */}
+      <div className='flex flex-wrap items-center justify-around gap-3 pt-4'>
+        <Link
+          href={resource ? `/resources/${resource._id}` : '/resources'}
+          className='inline-flex items-center justify-center rounded-lg border-2 border-stone-300 bg-stone-200 px-4 py-2.5 text-sm font-semibold text-dark-text transition-colors hover:bg-stone-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+        >
+          Cancel
+        </Link>
+
+        <button
+          type='submit'
+          disabled={isPending}
+          className='inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50'
+        >
+          {isPending
+            ? 'Saving...'
+            : resource
+              ? 'Update Resource'
+              : 'Create Resource'}
+        </button>
+      </div>
     </form>
   );
 }

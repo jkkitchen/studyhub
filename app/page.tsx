@@ -5,6 +5,7 @@ import { getCourses, getAssignments, getResources } from '@/lib/db';
 import AssignmentCard from '@/components/AssignmentCard';
 import ResourceCard from '@/components/ResourceCard';
 import CourseCard from '@/components/CourseCard';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -23,7 +24,7 @@ export default async function DashboardPage() {
   }
 
   //DATA FETCHING
-  const allCourses = (await getCourses()); //need all courses available on this page so assignments can call the course code from this
+  const allCourses = await getCourses(); //need all courses available on this page so assignments can call the course code from this
   const courses = allCourses.slice(0, 4); //only display the first 4 courses (will be in alphabetical order right now)
   const assignments = (await getAssignments())
     .filter((assignment) => !assignment.completed) //only shows incomplete assignments on the dashboard
@@ -81,12 +82,12 @@ export default async function DashboardPage() {
           <h2 className='text-xl font-bold text-dark-text sm:text-2xl'>
             Courses
           </h2>
-          <a
+          <Link
             href='/courses'
             className='text-sm font-semibold text-primary hover:text-primary-hover'
           >
             View all
-          </a>
+          </Link>
         </div>
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
           {courses.map((course) => (
@@ -103,12 +104,12 @@ export default async function DashboardPage() {
           <h2 className='text-xl font-bold text-dark-text sm:text-2xl'>
             Assignments
           </h2>
-          <a
+          <Link
             href='/assignments'
             className='text-sm font-semibold text-primary hover:text-primary-hover'
           >
             View all
-          </a>
+          </Link>
         </div>
         <div className='flex flex-col gap-3'>
           {assignments.map((assignment) => {
@@ -136,12 +137,12 @@ export default async function DashboardPage() {
           <h2 className='text-xl font-bold text-dark-text sm:text-2xl'>
             Resources
           </h2>
-          <a
+          <Link
             href='/resources'
             className='text-sm font-semibold text-primary hover:text-primary-hover'
           >
             View all
-          </a>
+          </Link>
         </div>
         <div className='flex flex-col gap-3'>
           {resources.map((resource) => {

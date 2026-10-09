@@ -2,7 +2,8 @@
 
 import { useActionState } from 'react';
 import { addAssignmentAction, updateAssignmentAction, type AssignmentState } from '@/lib/actions';
-import { Assignment, Course } from '@/types/models';
+import type { Assignment, Course } from '@/types/models';
+import Link from 'next/link';
 
 interface AssignmentFormProps {
     assignment?: Assignment; //? because this form can be used for creating a new assignment or editing an existing one
@@ -27,10 +28,13 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
   );
 
   return (
-    <form action={formAction} className='flex flex-col gap-4'>
-      {/*Assignment Title*/}
+    <form action={formAction} className='flex w-full flex-col gap-5'>
+      {/* Assignment Title */}
       <div>
-        <label htmlFor='title' className='block font-medium mb-1'>
+        <label
+          htmlFor='title'
+          className='mb-1 block font-medium text-dark-text'
+        >
           Assignment Title
         </label>
         <input
@@ -40,29 +44,33 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
           defaultValue={assignment?.title ?? ''}
           required
           aria-describedby='title-error'
-          className='w-full border rounded p-2'
+          className='w-full rounded-lg border-2 border-stone-200 bg-background px-3 py-2.5 text-dark-text transition-colors focus:border-primary focus:outline-none'
         />
-      </div>
-      <div id='title-error' aria-live='polite'>
-        {state.errors?.title?.map((error) => (
-          <p key={error} className='text-red-600 text-sm'>
-            {error}
-          </p>
-        ))}
+        <div id='title-error' aria-live='polite'>
+          {state.errors?.title?.map((error) => (
+            <p key={error} className='mt-1 text-sm text-red-600'>
+              {error}
+            </p>
+          ))}
+        </div>
       </div>
 
       {/*Assignment Description*/}
       <div>
-        <label htmlFor='description' className='block font-medium mb-1'>
+        <label
+          htmlFor='description'
+          className='mb-1 block font-medium text-dark-text'
+        >
           Assignment Description
         </label>
         <textarea
           id='description'
           name='description'
           defaultValue={assignment?.description ?? ''}
+          rows={4}
           required
           aria-describedby='description-error'
-          className='w-full border rounded p-2'
+          className='w-full rounded-lg border-2 border-stone-200 bg-background px-3 py-2.5 text-dark-text transition-colors focus:border-primary focus:outline-none'
         />
       </div>
       <div id='description-error' aria-live='polite'>
@@ -75,7 +83,10 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
 
       {/*Course Selection*/}
       <div>
-        <label htmlFor='courseId' className='block font-medium mb-1'>
+        <label
+          htmlFor='courseId'
+          className='mb-1 block font-medium text-dark-text'
+        >
           Course
         </label>
         <select
@@ -84,7 +95,7 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
           defaultValue={assignment?.courseId ?? ''}
           required
           aria-describedby='courseId-error'
-          className='w-full border rounded p-2'
+          className='w-full rounded-lg border-2 border-stone-200 bg-background px-3 py-2.5 text-dark-text transition-colors focus:border-primary focus:outline-none'
         >
           <option value='' disabled>
             Select the Course
@@ -106,7 +117,10 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
 
       {/* Due Date */}
       <div>
-        <label htmlFor='dueDate' className='block font-medium mb-1'>
+        <label
+          htmlFor='dueDate'
+          className='mb-1 block font-medium text-dark-text'
+        >
           Due Date
         </label>
         <input
@@ -119,7 +133,7 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
               : ''
           }
           aria-describedby='dueDate-error'
-          className='w-full border rounded p-2'
+          className='w-full rounded-lg border-2 border-stone-200 bg-background px-3 py-2.5 text-dark-text transition-colors focus:border-primary focus:outline-none'
         />
         <div id='dueDate-error' aria-live='polite'>
           {state.errors?.dueDate?.map((error) => (
@@ -131,27 +145,40 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
       </div>
 
       {/* Completed */}
-      <div>
+      <div className='flex items-center gap-3'>
         <input
           type='checkbox'
           id='completed'
           name='completed'
           defaultChecked={assignment?.completed ?? false}
+          className='h-4 w-4 accent-primary'
         />
-        <label htmlFor='completed'>Completed</label>
+        <label htmlFor='completed' className='font-medium text-dark-text'>
+          Completed
+        </label>
       </div>
 
-      <button
-        type='submit'
-        disabled={isPending}
-        className='rounded-lg bg-green-700 px-4 py-2 font-semibold text-white hover:bg-green-800 disabled:opacity-50'
-      >
-        {isPending
-          ? 'Saving...'
-          : assignment
-            ? 'Update Assignment'
-            : 'Create Assignment'}
-      </button>
+      {/* Form buttons */}
+      <div className='flex flex-wrap items-center justify-around gap-3 pt-4'>
+        <Link
+          href={assignment ? `/assignments/${assignment._id}` : '/assignments'}
+          className='inline-flex items-center justify-center rounded-lg border-2 border-stone-300 bg-stone-200 px-4 py-2.5 text-sm font-semibold text-dark-text transition-colors hover:bg-stone-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
+        >
+          Cancel
+        </Link>
+
+        <button
+          type='submit'
+          disabled={isPending}
+          className='inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50'
+        >
+          {isPending
+            ? 'Saving...'
+            : assignment
+              ? 'Update Assignment'
+              : 'Create Assignment'}
+        </button>
+      </div>
     </form>
   );
 }
