@@ -13,17 +13,25 @@ export const metadata: Metadata = {
 
 
 export default async function DashboardPage() {
+  // USER AUTHENTICATION
+  // Only authenticated users can access the dashboard.
   const session = await auth();
   if (!session?.user) {
     redirect('/login');
   }
 
-  const [courses, assignments, resources] = await Promise.all([
+  // DATA FETCHING
+  // Keep all courses available for looking up course codes on assignment and resource cards.
+  const [allCourses, allAssignments, allResources] = await Promise.all([
     getCourses(),
     getAssignments(),
     getResources(),
   ]);
-  const allCourses = courses;
+  const courses = allCourses.slice(0, 4); // Display only the first four courses.
+  const assignments = allAssignments
+    .filter((assignment) => !assignment.completed) // Show only incomplete assignments.
+    .slice(0, 4); // Display only the first four assignments.
+  const resources = allResources.slice(0, 4); // Display only the first four resources.
 
   const emailUsername = session?.user?.email
     ?.split('@')[0]
@@ -33,6 +41,7 @@ export default async function DashboardPage() {
     .replace(/\b\w/g, (character) => character.toUpperCase());
   const userName = session?.user?.name?.trim() || emailUsername || 'there';
 
+  // PAGE CONTENT
   return (
     <main className='flex-1 mx-auto flex max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 sm:py-10'>
       {/* Section 1: Welcome + search */}
