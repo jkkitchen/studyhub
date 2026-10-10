@@ -41,42 +41,88 @@ export default async function OnboardingPage() {
   const firstName = session.user.name?.split(' ')[0];
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-zinc-50 px-6 py-16 dark:bg-black">
-      <div className="w-full max-w-sm rounded-xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-          Welcome to StudyHub{firstName ? `, ${firstName}` : ''}!
+    <main className='flex min-h-[70vh] items-center justify-center px-4 py-12'>
+      <section
+        aria-labelledby='onboarding-heading'
+        className='w-full max-w-md rounded-2xl border-2 border-stone-200 bg-surface p-8 shadow-sm sm:p-10'
+      >
+        <div
+          aria-hidden='true'
+          className='mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-light text-primary'
+        >
+          <svg
+            viewBox='0 0 24 24'
+            className='h-6 w-6'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='2'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+          >
+            <path d='M22 11.08V12a10 10 0 1 1-5.93-9.14' />
+            <path d='M22 4 12 14.01l-3-3' />
+          </svg>
+        </div>
+
+        <h1
+          id='onboarding-heading'
+          className='text-3xl font-bold tracking-tight text-dark-text'
+        >
+          Welcome to StudyHub
+          {firstName && (
+            <>
+              , <span className='text-primary'>{firstName}</span>
+            </>
+          )}
+          !
         </h1>
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          You&apos;re signed in as {session.user.email}. Confirm your details
-          to finish setting up your account.
+        <p className='mt-2 text-base text-muted'>
+          You&apos;re signed in as{' '}
+          <span className='font-semibold text-dark-text'>
+            {session.user.email}
+          </span>
+          . Confirm your details to finish setting up your account.
         </p>
 
-        <form action={completeOnboarding} className="mt-6 flex flex-col gap-4">
+        <form action={completeOnboarding} className='mt-8 flex flex-col gap-5'>
           <div>
             <label
-              htmlFor="name"
-              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              htmlFor='name'
+              className='mb-1.5 block text-sm font-semibold text-dark-text'
             >
-              Display name
+              Display name <span className='text-danger'>*</span>
             </label>
             <input
-              id="name"
-              name="name"
-              type="text"
+              id='name'
+              name='name'
+              type='text'
               defaultValue={session.user.name ?? ''}
               required
-              className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+              placeholder='Your name'
+              className='w-full rounded-lg border-2 border-stone-200 bg-background px-3.5 py-2.5 text-sm text-dark-text placeholder:text-subtle transition-colors focus:border-accent focus:outline-none'
             />
           </div>
 
           <button
-            type="submit"
-            className="mt-2 w-full rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            type='submit'
+            className='inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
           >
             Get started
+            <svg
+              aria-hidden='true'
+              viewBox='0 0 24 24'
+              className='h-4 w-4'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+            >
+              <path d='M5 12h14M13 6l6 6-6 6' />
+            </svg>
           </button>
         </form>
-      </div>
+      </section>
     </main>
   );
 }
