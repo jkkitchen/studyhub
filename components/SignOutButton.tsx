@@ -14,7 +14,12 @@ export default function SignOutButton() {
         await signOut({ redirectTo: '/login' });
       }}
     >
-      <button type="submit">Sign Out</button>
+      <button
+        type='submit'
+        className='block w-full rounded-lg px-4 py-3 text-left text-base font-medium text-danger transition-colors hover:bg-danger-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+      >
+        Sign Out
+      </button>
     </form>
   );
 }
