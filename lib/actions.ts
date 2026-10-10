@@ -280,8 +280,12 @@ export async function deleteCourseAction(courseId: string) {
     console.error('Failed to delete course:', error);
     throw new Error('Failed to delete course.');
   }
-  //Refresh the cached data on the courses page
+  //Refresh the cached data on all affected pages
+  revalidatePath('/');
   revalidatePath('/courses');
+  revalidatePath('/assignments');
+  revalidatePath('/resources');
+
   redirect('/courses');
 }
 

@@ -19,7 +19,8 @@ export const metadata: Metadata = {
 
 export default async function EditAssignmentPage({
   params,
-}: EditAssignmentPageProps) { //Pull params out of the page props
+}: EditAssignmentPageProps) {
+  //Pull params out of the page props
   const { id } = await params; //Pull id out of the params
 
   //Retrieve the assignment document (Mongoose document) from the database using the id from the URL params, and retrieve the list of courses for the dropdown

@@ -27,6 +27,7 @@ export default async function NewResourcePage() {
   }));
 
   //Page Content
+  //Page Content
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6 px-4 py-8 sm:px-6 sm:py-10">
       {/* Page header */}

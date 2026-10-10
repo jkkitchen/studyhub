@@ -111,16 +111,33 @@ export async function deleteCourse(courseId: string) {
     throw new Error('User not authenticated');
   }
 
-  //Find and delete the course
-  const course = await Course.findOneAndDelete({
+  // Verify that this course belongs to the logged-in user
+  const course = await Course.findOne({
     _id: courseId,
     userId: session.user.id,
   });
 
-  //Check if course exists
   if (!course) {
     throw new Error('Course not found');
   }
+
+  // Delete associated assignments
+  await Assignment.deleteMany({
+    courseId: courseId,
+    userId: session.user.id,
+  });
+
+  // Delete associated resources
+  await Resource.deleteMany({
+    courseId: courseId,
+    userId: session.user.id,
+  });
+
+  // Delete the course
+  await Course.findOneAndDelete({
+    _id: courseId,
+    userId: session.user.id,
+  });
 
   //Returns values from database that were deleted
   return course;
@@ -283,7 +300,6 @@ export async function getResources() {
   return resources;
 }
 
-
 //Get one resource (used on the edit resource form)
 export async function getResourceById(resourceId: string) {
   await connectDB();
@@ -306,7 +322,6 @@ export async function getResourceById(resourceId: string) {
 
   return resource;
 }
-
 
 //Add new resource
 export async function addResource(data: ResourceInput) {
@@ -335,7 +350,7 @@ export async function addResource(data: ResourceInput) {
 export async function updateResource(resourceId: string, data: ResourceInput) {
   await connectDB();
   const session = await auth(); //get the logged-in user session
-  
+
   //Make sure there is a logged-in user
   if (!session?.user?.id) {
     throw new Error('User not authenticated');
@@ -386,5 +401,3 @@ export async function deleteResource(resourceId: string) {
   //Returns values from database (including id, createdAt, updatedAt), although not currently used in the actions.ts file, but could be useful in the future
   return resource;
 }
-
-

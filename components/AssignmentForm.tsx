@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useActionState } from 'react';
 import { addAssignmentAction, updateAssignmentAction, type AssignmentState } from '@/lib/actions';
-import { Assignment, Course } from '@/types/models';
+import type { Assignment, Course } from '@/types/models';
 
 interface AssignmentFormProps {
   assignment?: Assignment; //? because this form can be used for creating a new assignment or editing an existing one
@@ -62,8 +62,8 @@ export default function AssignmentForm({ assignment, courses }: AssignmentFormPr
           id="description"
           name="description"
           defaultValue={assignment?.description ?? ''}
-          required
           rows={4}
+          required          
           placeholder="What does this assignment involve?"
           aria-describedby="description-error"
           className="w-full rounded-lg border-2 border-stone-200 bg-background px-3.5 py-2.5 text-sm text-dark-text placeholder:text-subtle transition-colors focus:border-accent focus:outline-none"
