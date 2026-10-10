@@ -1,71 +1,37 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
-import { connectDB } from '@/lib/mongodb';
-import Course from '@/models/Course'; 
+import { NextResponse } from 'next/server';
+import { getCourses, addCourse } from '@/lib/db'; //Call server functions
 
+// GET /api/courses
 export async function GET() {
   try {
-    const session = await auth();
+    const courses = await getCourses();
 
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    //Connect to the database
-    await connectDB(); 
-
-    const courses = await Course.find({ userId: session.user.id }).sort({
-      createdAt: -1,
-    });
-
-    return NextResponse.json({ courses }, { status: 200 });
+    return NextResponse.json(courses);
   } catch (error) {
-    console.error('GET /api/courses error:', error);
+    console.error('Failed to get courses:', error);
+
     return NextResponse.json(
-      { error: 'Failed to fetch courses' },
+      { error: 'Failed to get courses' },
       { status: 500 }
     );
   }
 }
 
-export async function POST(request: NextRequest) {
+// POST /api/courses
+export async function POST(request: Request) {
   try {
-    const session = await auth();
-
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const body = await request.json();
-    const { name, code, description } = body;
 
-    if (!name || typeof name !== 'string') {
-      return NextResponse.json(
-        { error: 'Course name is required' },
-        { status: 400 }
-      );
-    }
-
-    if (!code || typeof code !== 'string') {
-      return NextResponse.json(
-        { error: 'Course code is required' },
-        { status: 400 }
-      );
-    }
-
-    //Connect to the database
-    await connectDB();
-
-    const course = await Course.create({
-      userId: session.user.id,
-      name: name.trim(),
-      code: code.trim(),
-      description: typeof description === 'string' ? description.trim() : '', //if a string, trim and save; if it is missing or isn't a string, save as an empty string
+    const course = await addCourse({
+      name: body.name,
+      code: body.code,
+      description: body.description,
     });
 
-    return NextResponse.json({ course }, { status: 201 });
+    return NextResponse.json(course, { status: 201 });
   } catch (error) {
-    console.error('POST /api/courses error:', error);
+    console.error('Failed to create course:', error);
+
     return NextResponse.json(
       { error: 'Failed to create course' },
       { status: 500 }
