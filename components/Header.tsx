@@ -156,7 +156,7 @@ export default function Header({ signOutButton }: HeaderProps) {
               strokeWidth='2'
               strokeLinecap='round'
             >
-              <path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/>
+              <path d='m6 6 12 12M18 6 6 18' />
             </svg>
           </button>
         </div>

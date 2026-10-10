@@ -5,6 +5,7 @@ import { getCourses, getAssignments, getResources } from '@/lib/db';
 import AssignmentCard from '@/components/AssignmentCard';
 import ResourceCard from '@/components/ResourceCard';
 import CourseCard from '@/components/CourseCard';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -13,25 +14,30 @@ export const metadata: Metadata = {
 
 
 export default async function DashboardPage() {
-  //USER AUTHENTICATION
-  //Get the user session data from auth
+  // USER AUTHENTICATION
+  // Only authenticated users can access the dashboard.
   const session = await auth();
-  //Check if the user is authenticated (they shouldn't be able to reach this page without logging in but TypeScript is complaining about session possibly being null)
   if (!session?.user) {
-    //redirect to the login page if not authenticated
     redirect('/login');
   }
 
   //DATA FETCHING
-  const allCourses = (await getCourses()); //need all courses available on this page so assignments can call the course code from this
+  const allCourses = await getCourses(); //need all courses available on this page so assignments can call the course code from this
   const courses = allCourses.slice(0, 4); //only display the first 4 courses (will be in alphabetical order right now)
   const assignments = (await getAssignments())
     .filter((assignment) => !assignment.completed) //only shows incomplete assignments on the dashboard
     .slice(0,4); //only show the first 4 assignments on the dashboard
   const resources = (await getResources()).slice(0,4); //only display 4 resources (will show 4 most recently created resources)
 
-  //PAGE CONTENT
-  //Build the courses section once the two models are resolved and merged
+  const emailUsername = session?.user?.email
+    ?.split('@')[0]
+    ?.replace(/[._-]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+  const userName = session?.user?.name?.trim() || emailUsername || 'there';
+
+  // PAGE CONTENT
   return (
     <main className='flex-1 mx-auto flex max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 sm:py-10'>
       {/* Section 1: Welcome + search */}
@@ -40,8 +46,7 @@ export default async function DashboardPage() {
           <div className='flex items-center gap-4'>
             <div>
               <h1 className='text-2xl font-bold tracking-tight text-dark-text sm:text-3xl'>
-                Welcome back,{' '}
-                <span className='text-primary'>{session.user.name}</span>!
+                Welcome back, <span className='text-primary'>{userName}</span>!
               </h1>
               <p className='mt-1 text-sm text-muted sm:text-base'>
                 Here&apos;s what&apos;s on your plate.
@@ -81,12 +86,12 @@ export default async function DashboardPage() {
           <h2 className='text-xl font-bold text-dark-text sm:text-2xl'>
             Courses
           </h2>
-          <a
+          <Link
             href='/courses'
             className='text-sm font-semibold text-primary hover:text-primary-hover'
           >
             View all
-          </a>
+          </Link>
         </div>
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
           {courses.map((course) => (
@@ -103,12 +108,12 @@ export default async function DashboardPage() {
           <h2 className='text-xl font-bold text-dark-text sm:text-2xl'>
             Assignments
           </h2>
-          <a
+          <Link
             href='/assignments'
             className='text-sm font-semibold text-primary hover:text-primary-hover'
           >
             View all
-          </a>
+          </Link>
         </div>
         <div className='flex flex-col gap-3'>
           {assignments.map((assignment) => {
@@ -136,12 +141,12 @@ export default async function DashboardPage() {
           <h2 className='text-xl font-bold text-dark-text sm:text-2xl'>
             Resources
           </h2>
-          <a
+          <Link
             href='/resources'
             className='text-sm font-semibold text-primary hover:text-primary-hover'
           >
             View all
-          </a>
+          </Link>
         </div>
         <div className='flex flex-col gap-3'>
           {resources.map((resource) => {
