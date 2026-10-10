@@ -5,6 +5,7 @@ import { getCourses, getAssignments, getResources } from '@/lib/db';
 import AssignmentCard from '@/components/AssignmentCard';
 import ResourceCard from '@/components/ResourceCard';
 import CourseCard from '@/components/CourseCard';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -20,18 +21,13 @@ export default async function DashboardPage() {
     redirect('/login');
   }
 
-  // DATA FETCHING
-  // Keep all courses available for looking up course codes on assignment and resource cards.
-  const [allCourses, allAssignments, allResources] = await Promise.all([
-    getCourses(),
-    getAssignments(),
-    getResources(),
-  ]);
-  const courses = allCourses.slice(0, 4); // Display only the first four courses.
-  const assignments = allAssignments
-    .filter((assignment) => !assignment.completed) // Show only incomplete assignments.
-    .slice(0, 4); // Display only the first four assignments.
-  const resources = allResources.slice(0, 4); // Display only the first four resources.
+  //DATA FETCHING
+  const allCourses = await getCourses(); //need all courses available on this page so assignments can call the course code from this
+  const courses = allCourses.slice(0, 4); //only display the first 4 courses (will be in alphabetical order right now)
+  const assignments = (await getAssignments())
+    .filter((assignment) => !assignment.completed) //only shows incomplete assignments on the dashboard
+    .slice(0,4); //only show the first 4 assignments on the dashboard
+  const resources = (await getResources()).slice(0,4); //only display 4 resources (will show 4 most recently created resources)
 
   const emailUsername = session?.user?.email
     ?.split('@')[0]
@@ -82,18 +78,20 @@ export default async function DashboardPage() {
         </div>
       </section>
 
+
+
       {/* Section 2: Courses */}
       <section>
         <div className='mb-4 flex items-center justify-between'>
           <h2 className='text-xl font-bold text-dark-text sm:text-2xl'>
             Courses
           </h2>
-          <a
+          <Link
             href='/courses'
             className='text-sm font-semibold text-primary hover:text-primary-hover'
           >
             View all
-          </a>
+          </Link>
         </div>
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
           {courses.map((course) => (
@@ -102,18 +100,20 @@ export default async function DashboardPage() {
         </div>
       </section>
 
+
+
       {/* Section 3: Assignments */}
       <section>
         <div className='mb-4 flex items-center justify-between'>
           <h2 className='text-xl font-bold text-dark-text sm:text-2xl'>
             Assignments
           </h2>
-          <a
+          <Link
             href='/assignments'
             className='text-sm font-semibold text-primary hover:text-primary-hover'
           >
             View all
-          </a>
+          </Link>
         </div>
         <div className='flex flex-col gap-3'>
           {assignments.map((assignment) => {
@@ -133,18 +133,20 @@ export default async function DashboardPage() {
         </div>
       </section>
 
+
+
       {/* Section 4: Resources */}
       <section>
         <div className='mb-4 flex items-center justify-between'>
           <h2 className='text-xl font-bold text-dark-text sm:text-2xl'>
             Resources
           </h2>
-          <a
+          <Link
             href='/resources'
             className='text-sm font-semibold text-primary hover:text-primary-hover'
           >
             View all
-          </a>
+          </Link>
         </div>
         <div className='flex flex-col gap-3'>
           {resources.map((resource) => {

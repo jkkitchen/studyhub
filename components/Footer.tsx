@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 
 export default function Footer() {
-  const currentYear: number = new Date().getFullYear();
+  const currentYear = 2026;
 
   return (
     <footer className='border-t-2 border-stone-200 bg-background'>
