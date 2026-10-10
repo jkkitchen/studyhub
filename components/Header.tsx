@@ -18,7 +18,7 @@ interface HeaderProps {
 }
 
 const navLinks: NavLink[] = [
-  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/', label: 'Dashboard' },
   { href: '/courses', label: 'Courses' },
   { href: '/assignments', label: 'Assignments' },
   { href: '/resources', label: 'Resources' },
