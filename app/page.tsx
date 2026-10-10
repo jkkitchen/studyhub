@@ -5,6 +5,8 @@ import { getCourses, getAssignments, getResources } from '@/lib/db';
 import AssignmentCard from '@/components/AssignmentCard';
 import ResourceCard from '@/components/ResourceCard';
 import CourseCard from '@/components/CourseCard';
+import { Search } from '@/components/SearchBar';
+import { Pagination } from '@/components/Pagination';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -12,22 +14,61 @@ export const metadata: Metadata = {
   description: 'Your courses, assignments, and study resources at a glance.',
 };
 
-
-export default async function DashboardPage() {
-  // USER AUTHENTICATION
-  // Only authenticated users can access the dashboard.
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string; page?: string }>;
+}) {
+  //USER AUTHENTICATION
+  //Get the user session data from auth
   const session = await auth();
   if (!session?.user) {
     redirect('/login');
   }
+  console.log('SESSION USER ID', session.user.id);
+
+  // Read the search term and page number from the URL
+  const params = await searchParams;
+  const query = (params?.query ?? '').toLowerCase();
+  const currentPage = Number(params?.page) || 1;
+  const PAGE_SIZE = 4;
+
+  const has = (text?: string) => (text ?? '').toLowerCase().includes(query);
 
   //DATA FETCHING
-  const allCourses = await getCourses(); //need all courses available on this page so assignments can call the course code from this
-  const courses = allCourses.slice(0, 4); //only display the first 4 courses (will be in alphabetical order right now)
-  const assignments = (await getAssignments())
-    .filter((assignment) => !assignment.completed) //only shows incomplete assignments on the dashboard
-    .slice(0,4); //only show the first 4 assignments on the dashboard
-  const resources = (await getResources()).slice(0,4); //only display 4 resources (will show 4 most recently created resources)
+  const allCourses = await getCourses(); //keep unfiltered so assignments/resources can find their course code
+
+  const filteredCourses = allCourses.filter((c) => has(c.name) || has(c.code));
+  const filteredAssignments = (await getAssignments())
+    .filter((a) => !a.completed)
+    .filter((a) => has(a.title) || has(a.description));
+  const filteredResources = (await getResources()).filter(
+    (r) => has(r.title) || has(r.type)
+  );
+  console.log('RENDER', {
+    query,
+    currentPage,
+    c: filteredCourses.length,
+    a: filteredAssignments.length,
+    r: filteredResources.length,
+  });
+
+  //PAGINATION
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const courses = filteredCourses.slice(start, start + PAGE_SIZE);
+  const assignments = filteredAssignments.slice(start, start + PAGE_SIZE);
+  const resources = filteredResources.slice(start, start + PAGE_SIZE);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(
+      Math.max(
+        filteredCourses.length,
+        filteredAssignments.length,
+        filteredResources.length
+      ) / PAGE_SIZE
+    )
+  );
 
   const emailUsername = session?.user?.email
     ?.split('@')[0]
@@ -69,16 +110,10 @@ export default async function DashboardPage() {
               <circle cx='11' cy='11' r='7' />
               <path d='M21 21l-4.3-4.3' />
             </svg>
-            <input
-              type='text'
-              placeholder='Search courses, assignments, resources...'
-              className='w-full rounded-lg border-2 border-stone-200 bg-background py-2.5 pl-10 pr-4 text-sm text-dark-text placeholder:text-subtle transition-colors focus:border-accent focus:outline-none'
-            />
+            <Search />
           </div>
         </div>
       </section>
-
-
 
       {/* Section 2: Courses */}
       <section>
@@ -99,8 +134,6 @@ export default async function DashboardPage() {
           ))}
         </div>
       </section>
-
-
 
       {/* Section 3: Assignments */}
       <section>
@@ -133,8 +166,6 @@ export default async function DashboardPage() {
         </div>
       </section>
 
-
-
       {/* Section 4: Resources */}
       <section>
         <div className='mb-4 flex items-center justify-between'>
@@ -164,6 +195,7 @@ export default async function DashboardPage() {
           })}
         </div>
       </section>
+      <Pagination totalPages={totalPages} />
     </main>
   );
 }
