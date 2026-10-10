@@ -7,8 +7,6 @@ import Footer from '@/components/Footer';
 import { auth } from '@/auth';
 import SignOutButton from '@/components/SignOutButton';
 
-// inside RootLayout, before the return:
-const session = await auth();
 
 const nunitoSans = Nunito_Sans({
   variable: '--font-nunito-sans',
@@ -32,12 +30,12 @@ export const metadata: Metadata = {
 };
 
 
-export default function RootLayout({ children }: LayoutProps<'/'>) {
+export default async function RootLayout({ children }: LayoutProps<'/'>) {
+  // inside RootLayout, before the return:
+  const session = await auth();
+
   return (
-    <html
-      lang='en'
-      className={`${nunitoSans.variable} h-full antialiased`}
-    >
+    <html lang='en' className={`${nunitoSans.variable} h-full antialiased`}>
       <body className='flex flex-col min-h-dvh'>
         <Header signOutButton={session?.user ? <SignOutButton /> : null} />
 
