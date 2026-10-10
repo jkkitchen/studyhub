@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 
 
 
@@ -11,14 +12,19 @@ interface NavLink {
   label: string;
 }
 
+interface HeaderProps {
+  // The layout passes <SignOutButton /> here only when a user is signed in.
+  signOutButton?: ReactNode;
+}
+
 const navLinks: NavLink[] = [
-  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/', label: 'Dashboard' },
   { href: '/courses', label: 'Courses' },
   { href: '/assignments', label: 'Assignments' },
   { href: '/resources', label: 'Resources' },
 ];
 
-export default function Header() {
+export default function Header({ signOutButton }: HeaderProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const pathname = usePathname();
 
@@ -181,6 +187,18 @@ export default function Header() {
             })}
           </ul>
         </nav>
+
+        {/* Sign out: only rendered when the layout passes the button in
+            (i.e. the user is signed in). Pinned to the bottom of the sidebar.
+            onSubmit closes the menu when the sign-out form is submitted. */}
+        {signOutButton && (
+          <div
+            className='border-t-2 border-stone-200 p-3'
+            onSubmit={() => setIsOpen(false)}
+          >
+            {signOutButton}
+          </div>
+        )}
       </aside>
     </>
   );
