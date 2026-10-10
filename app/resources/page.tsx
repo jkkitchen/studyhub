@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getResources, getCourses } from '@/lib/db';
-import ResourceCard from '@/components/ResourceCard';
+import { getCourses } from '@/lib/db';
+import ResourceList from '@/components/ResourceList';
 
 export const metadata: Metadata = {
   title: 'Resources',
@@ -11,21 +11,7 @@ export const metadata: Metadata = {
 
 export default async function ResourcesPage() {
   //Data Fetching
-  const resources = await getResources();
   const courses = await getCourses(); //Need this to display Course Code on Resource Card
-
-  //Separate resources by type: Note, Link, File
-  const linkResources = resources.filter(
-    (resource) => resource.type === 'link'
-  );
-
-  const noteResources = resources.filter(
-    (resource) => resource.type === 'note'
-  );
-
-  const fileResources = resources.filter(
-    (resource) => resource.type === 'file'
-  );
 
   return (
     <div className='mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 sm:py-10'>
@@ -61,84 +47,13 @@ export default async function ResourcesPage() {
         </Link>
       </div>
 
-      {/* Links section */}
-      {/* Links section */}
-      <section>
-        <h2 className='mb-4 text-xl font-bold text-dark-text'>Links</h2>
-
-        {linkResources.length === 0 ? (
-          <p className='text-sm text-muted'>No links added yet.</p>
-        ) : (
-          <div className='flex flex-col gap-3'>
-            {linkResources.map((resource) => {
-              const course = courses.find(
-                (course) =>
-                  course._id.toString() === resource.courseId.toString()
-              );
-
-              return (
-                <ResourceCard
-                  key={resource._id.toString()}
-                  resource={resource}
-                  courseCode={course?.code ?? 'Unknown Course'}
-                />
-              );
-            })}
-          </div>
-        )}
-      </section>
-
-      {/* Notes section */}
-      <section>
-        <h2 className='mb-4 text-xl font-bold text-dark-text'>Notes</h2>
-
-        {noteResources.length === 0 ? (
-          <p className='text-sm text-muted'>No notes added yet.</p>
-        ) : (
-          <div className='flex flex-col gap-3'>
-            {noteResources.map((resource) => {
-              const course = courses.find(
-                (course) =>
-                  course._id.toString() === resource.courseId.toString()
-              );
-
-              return (
-                <ResourceCard
-                  key={resource._id.toString()}
-                  resource={resource}
-                  courseCode={course?.code ?? 'Unknown Course'}
-                />
-              );
-            })}
-          </div>
-        )}
-      </section>
-
-      {/* Files section */}
-      <section>
-        <h2 className='mb-4 text-xl font-bold text-dark-text'>Files</h2>
-
-        {fileResources.length === 0 ? (
-          <p className='text-sm text-muted'>No files added yet.</p>
-        ) : (
-          <div className='flex flex-col gap-3'>
-            {fileResources.map((resource) => {
-              const course = courses.find(
-                (course) =>
-                  course._id.toString() === resource.courseId.toString()
-              );
-
-              return (
-                <ResourceCard
-                  key={resource._id.toString()}
-                  resource={resource}
-                  courseCode={course?.code ?? 'Unknown Course'}
-                />
-              );
-            })}
-          </div>
-        )}
-      </section>
+      {/* Resource sections will be rendered by the client component */}
+      <ResourceList
+        courses={courses.map((course) => ({
+          id: course._id.toString(),
+          code: course.code,
+        }))}
+      />
     </div>
   );
 }
