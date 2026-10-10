@@ -1,7 +1,7 @@
 // Since we only use Google OAuth, there's no traditional "sign up with a
-// password" step. Instead, this page acts as the registration/welcome step:
+// password" step. Instead, this page acts as the welcome step:
 // it runs once, right after a user's first successful Google sign-in
-// (proxy.ts sends them here), lets them confirm their name, and marks them
+// (proxy.ts sends them here) and marks them
 // as onboarded so they aren't sent back here on future visits.
 
 import { auth } from '@/auth';
@@ -17,15 +17,8 @@ export default async function OnboardingPage() {
     redirect('/login');
   }
 
-  async function completeOnboarding(formData: FormData) {
+  async function completeOnboarding() {
     'use server';
-
-    const name = formData.get('name')?.toString().trim();
-
-    // TODO: once lib/db.ts / a User model exists, this is where we should
-    // create or update the User record (confirmed name, any extra profile
-    // fields we add later) instead of only relying on the cookie below.
-    console.log('Onboarding submitted for', session?.user?.email, { name });
 
     const cookieStore = await cookies();
     cookieStore.set(ONBOARDING_COOKIE, '1', {
@@ -81,28 +74,11 @@ export default async function OnboardingPage() {
           <span className='font-semibold text-dark-text'>
             {session.user.email}
           </span>
-          . Confirm your details to finish setting up your account.
+          . You&apos;re ready to start organizing your courses, assignments, and
+          resources!
         </p>
 
-        <form action={completeOnboarding} className='mt-8 flex flex-col gap-5'>
-          <div>
-            <label
-              htmlFor='name'
-              className='mb-1.5 block text-sm font-semibold text-dark-text'
-            >
-              Display name <span className='text-danger'>*</span>
-            </label>
-            <input
-              id='name'
-              name='name'
-              type='text'
-              defaultValue={session.user.name ?? ''}
-              required
-              placeholder='Your name'
-              className='w-full rounded-lg border-2 border-stone-200 bg-background px-3.5 py-2.5 text-sm text-dark-text placeholder:text-subtle transition-colors focus:border-accent focus:outline-none'
-            />
-          </div>
-
+        <form action={completeOnboarding} className='mt-8'>
           <button
             type='submit'
             className='inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
