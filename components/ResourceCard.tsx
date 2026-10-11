@@ -1,8 +1,9 @@
-import type { IResource } from '@/models/Resource';
+import type { IResource } from '@/models/Resource'; //For use on dashboard
+import type { Resource } from '@/types/models'; //For use in ResourceList component
 import Link from 'next/link';
 
 interface ResourceCardProps {
-  resource: IResource;
+  resource: IResource | Resource ; //IResource for Dashboard, Resource for ResourceList used on Resources page
   courseCode: string;
 }
 
