@@ -66,10 +66,6 @@ export default function ResourceList({ courses }: ResourceListProps) {
     (resource) => resource.type === 'note'
   );
 
-  const fileResources = resources.filter(
-    (resource) => resource.type === 'file'
-  );
-
   // Display a section of resources using our existing ResourceCard
   function renderSection(
     title: string,
@@ -107,7 +103,6 @@ export default function ResourceList({ courses }: ResourceListProps) {
     <>
       {renderSection('Links', linkResources, 'No links added yet.')}
       {renderSection('Notes', noteResources, 'No notes added yet.')}
-      {renderSection('Files', fileResources, 'No files added yet.')}
     </>
   );
 }

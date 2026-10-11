@@ -22,7 +22,7 @@ export default async function ResourcesPage() {
             Resources
           </h1>
           <p className='mt-1 text-sm text-muted sm:text-base'>
-            Notes, links, and recordings, most recently opened first.
+            Notes and links most recently opened first.
           </p>
         </div>
 

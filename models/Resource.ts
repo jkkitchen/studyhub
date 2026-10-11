@@ -5,7 +5,7 @@ import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 
 // A union type: a resource's type can ONLY be one of these three strings.
 // This was missing from your file, and is why 'ResourceType' had no definition.
-export type ResourceType = 'link' | 'note' | 'file';
+export type ResourceType = 'link' | 'note';
 
 // Describes the shape of ONE resource record, for TypeScript only (checked while you write code)
 export interface IResource extends Document {

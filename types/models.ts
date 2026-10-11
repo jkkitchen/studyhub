@@ -38,7 +38,7 @@ export interface Resource {
   userId: string;
   courseId: string;
   title: string;
-  type: 'link' | 'note' | 'file';
+  type: 'link' | 'note';
   content: string;
   createdAt: string;
   updatedAt: string;
@@ -47,6 +47,6 @@ export interface Resource {
 export interface ResourceInput {
   courseId: string;
   title: string;
-  type: 'link' | 'note' | 'file';
+  type: 'link' | 'note';
   content: string;
 }
