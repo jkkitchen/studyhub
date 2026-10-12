@@ -7,6 +7,9 @@ import { AssignmentInput, CourseInput, ResourceInput } from '@/types/models';
 import { connectDB } from '@/lib/mongodb';
 import { auth } from '@/auth';
 
+// Number of courses/assignments/resources to display per page
+const ITEMS_PER_PAGE = 10;
+
 //COURSES
 //Get all courses
 export async function getCourses() {
@@ -47,6 +50,75 @@ export async function getCourseById(courseId: string) {
   }
 
   return course;
+}
+
+//Get courses filtered by search term and page number
+export async function getFilteredCourses(query: string, currentPage: number) {
+  //Connect to MongoDB
+  await connectDB();
+
+  //Get user id
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+  //Ensures the courses shown on the page are the correct ones by skipping courses that are shown on previous pages (i.e. 1-6 on page 1, 7-12 on page 2, etc.)
+  const skip = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  //Filters based on search term entered
+  const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); //Accounts for any special characters entered
+
+  const filter = {
+    userId: session.user.id,
+    $or: [
+      { name: { $regex: safeQuery, $options: 'i' } },
+      { code: { $regex: safeQuery, $options: 'i' } },
+      { description: { $regex: safeQuery, $options: 'i' } },
+    ],
+  };
+
+  //Fetch and display courses matching search terms
+  const courses = await Course.find(filter)
+    .sort({ code: 1 })
+    .skip(skip)
+    .limit(ITEMS_PER_PAGE);
+
+  return courses;
+}
+
+// Get the total number of pages for filtered courses
+export async function getCoursesTotalPages(query: string) {
+  //Connect to MongoDB
+  await connectDB();
+
+  //Get user id
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+  //Filter based on search term entered
+  const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); //Accounts for any special characters entered
+
+  const filter = {
+    userId: session.user.id,
+    $or: [
+      { name: { $regex: safeQuery, $options: 'i' } },
+      { code: { $regex: safeQuery, $options: 'i' } },
+      { description: { $regex: safeQuery, $options: 'i' } },
+    ],
+  };
+
+  //Count how many courses match the search
+  const count = await Course.countDocuments(filter);
+
+  //Calculate how many pages are needed
+  const totalPages = Math.ceil(count / ITEMS_PER_PAGE);
+
+  return totalPages;
 }
 
 //Add new course
@@ -196,6 +268,99 @@ export async function getAssignmentById(assignmentId: string) {
   return assignment;
 }
 
+//Get assignments filtered by search term and page number
+export async function getFilteredAssignments(
+  query: string,
+  currentPage: number
+) {
+  //Connect to MongoDB
+  await connectDB();
+
+  //Get user id
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+  //Ensures the assignments shown on the page are the correct ones by skipping assignments that are shown on previous pages (i.e. 1-6 on page 1, 7-12 on page 2, etc.)
+  const skip = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  //Filters based on search term entered
+  const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); //Accounts for any special characters entered
+
+  // Find courses whose code or name matches the search
+  const matchingCourses = await Course.find({
+    userId: session.user.id,
+    $or: [
+      { code: { $regex: safeQuery, $options: 'i' } },
+      { name: { $regex: safeQuery, $options: 'i' } },
+    ],
+  }).select('_id');
+
+  const matchingCourseIds = matchingCourses.map((course) => course._id);
+
+  const filter = {
+    userId: session.user.id,
+    $or: [
+      { title: { $regex: safeQuery, $options: 'i' } },
+      { description: { $regex: safeQuery, $options: 'i' } },
+      { courseId: { $in: matchingCourseIds } },
+    ],
+  };
+
+  //Fetch and display assignments matching search terms
+  const assignments = await Assignment.find(filter)
+    .sort({ dueDate: 1, _id: 1 })
+    .skip(skip)
+    .limit(ITEMS_PER_PAGE);
+
+  return assignments;
+}
+
+// Get the total number of pages for filtered assignments
+export async function getAssignmentsTotalPages(query: string) {
+  //Connect to MongoDB
+  await connectDB();
+
+  //Get user id
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+  //Filter based on search term entered
+  const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); //Accounts for any special characters entered
+
+  const matchingCourses = await Course.find({
+    userId: session.user.id,
+    $or: [
+      { code: { $regex: safeQuery, $options: 'i' } },
+      { name: { $regex: safeQuery, $options: 'i' } },
+    ],
+  }).select('_id');
+
+  const matchingCourseIds = matchingCourses.map((course) => course._id);
+
+  const filter = {
+    userId: session.user.id,
+    $or: [
+      { title: { $regex: safeQuery, $options: 'i' } },
+      { description: { $regex: safeQuery, $options: 'i' } },
+      { courseId: { $in: matchingCourseIds } },
+    ],
+  };
+
+  //Count how many assignments match the search
+  const count = await Assignment.countDocuments(filter);
+
+  //Calculate how many pages are needed
+  const totalPages = Math.ceil(count / ITEMS_PER_PAGE);
+
+  return totalPages;
+}
+
 //Create new assignment
 export async function addAssignment(data: AssignmentInput) {
   await connectDB();
@@ -321,6 +486,98 @@ export async function getResourceById(resourceId: string) {
   }
 
   return resource;
+}
+
+//Get resources filtered by search term and page number
+export async function getFilteredResources(query: string, currentPage: number) {
+  //Connect to MongoDB
+  await connectDB();
+
+  //Get user id
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+  //Ensures the resources shown on the page are the correct ones by skipping resources that are shown on previous pages (i.e. 1-6 on page 1, 7-12 on page 2, etc.)
+  const skip = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  //Filters based on search term entered
+  const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); //Accounts for any special characters entered
+
+  // Find courses whose code or name matches the search
+  const matchingCourses = await Course.find({
+    userId: session.user.id,
+    $or: [
+      { code: { $regex: safeQuery, $options: 'i' } },
+      { name: { $regex: safeQuery, $options: 'i' } },
+    ],
+  }).select('_id');
+
+  const matchingCourseIds = matchingCourses.map((course) => course._id);
+
+  const filter = {
+    userId: session.user.id,
+    $or: [
+      { title: { $regex: safeQuery, $options: 'i' } },
+      { type: { $regex: safeQuery, $options: 'i' } },
+      { content: { $regex: safeQuery, $options: 'i' } },
+      { courseId: { $in: matchingCourseIds } },
+    ],
+  };
+
+  //Fetch and display resources matching search terms
+  const resources = await Resource.find(filter)
+    .sort({ createdAt: -1, _id: -1 })
+    .skip(skip)
+    .limit(ITEMS_PER_PAGE);
+
+  return resources;
+}
+
+// Get the total number of pages for filtered resources
+export async function getResourcesTotalPages(query: string) {
+  //Connect to MongoDB
+  await connectDB();
+
+  //Get user id
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error('User not authenticated');
+  }
+
+  //Filter based on search term entered
+  const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); //Accounts for any special characters entered
+
+  const matchingCourses = await Course.find({
+    userId: session.user.id,
+    $or: [
+      { code: { $regex: safeQuery, $options: 'i' } },
+      { name: { $regex: safeQuery, $options: 'i' } },
+    ],
+  }).select('_id');
+
+  const matchingCourseIds = matchingCourses.map((course) => course._id);
+
+  const filter = {
+    userId: session.user.id,
+    $or: [
+      { title: { $regex: safeQuery, $options: 'i' } },
+      { type: { $regex: safeQuery, $options: 'i' } },
+      { content: { $regex: safeQuery, $options: 'i' } },
+      { courseId: { $in: matchingCourseIds } },
+    ],
+  };
+
+  //Count how many resources match the search
+  const count = await Resource.countDocuments(filter);
+
+  //Calculate how many pages are needed
+  const totalPages = Math.ceil(count / ITEMS_PER_PAGE);
+
+  return totalPages;
 }
 
 //Add new resource

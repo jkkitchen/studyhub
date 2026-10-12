@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getCourses } from '@/lib/db';
 import ResourceList from '@/components/ResourceList';
+import { Search } from '@/components/SearchBar';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Resources',
@@ -28,7 +30,7 @@ export default async function ResourcesPage() {
 
         {/* Add Resource Link*/}
         <Link
-          href='/resources/create'
+          href='/resources/new'
           className='inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover'
         >
           <svg
@@ -47,13 +49,23 @@ export default async function ResourcesPage() {
         </Link>
       </div>
 
+      {/* Search resources */}
+      <div className='w-full'>
+        <Suspense fallback={null}>
+          <Search />
+        </Suspense>
+      </div>
+
       {/* Resource sections will be rendered by the client component */}
-      <ResourceList
-        courses={courses.map((course) => ({
-          id: course._id.toString(),
-          code: course.code,
-        }))}
-      />
+      {/* Wrapped in Suspense because it now uses search params as well */}
+      <Suspense fallback={<p>Loading resources...</p>}>
+        <ResourceList
+          courses={courses.map((course) => ({
+            id: course._id.toString(),
+            code: course.code,
+          }))}
+        />
+      </Suspense>
     </div>
   );
 }

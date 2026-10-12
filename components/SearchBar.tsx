@@ -23,9 +23,10 @@ export function Search() {
     <input
       type='text'
       placeholder='Search courses, assignments, resources..'
+      aria-label='Search courses, assignments, resrouces..'
       defaultValue={searchParams.get('query')?.toString()}
       onChange={(e) => handleSearch(e.target.value)}
-      className='w-full rounded-lg border-2 border-stone-200 bg-background py-2.5 pl-10 pr-4 text-sm text-dark-text placeholder:text-subtle transition-colors focus:border-accent focus:outline-none'
+      className='w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-dark-text placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20'
     />
   );
 }
