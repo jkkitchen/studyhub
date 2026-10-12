@@ -12,8 +12,8 @@ export interface IResource extends Document {
   userId: string; // id of the user who owns this resource
   courseId: Types.ObjectId; // id of the course this resource belongs to
   title: string; // display name of the resource
-  type: ResourceType; // must be "link", "note" or "file"
-  content: string; // the URL, note text, or file reference
+  type: ResourceType; // must be "link" or "note"
+  content: string; // the URL or note text
   createdAt: Date; // added automatically by timestamps
   updatedAt: Date; // added automatically, changes on every update
 }
@@ -39,7 +39,7 @@ const ResourceSchema = new Schema<IResource>(
     },
     type: {
       type: String,
-      enum: ['link', 'note', 'file'], // Mongoose rejects any other value at runtime
+      enum: ['link', 'note'], // Mongoose rejects any other value at runtime
       default: 'link', // used when no type is given
     },
     content: {
