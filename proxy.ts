@@ -25,10 +25,13 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: [
-        '/',
-        '/onboarding'
-        //Add additional routes here once the pages are built (/course, /assignments, /resources)
-        //Using a pattern will protect everything underneath a route, for example "/course/:path*" will protect the course page and anything nested underneath it
-    ],
+  matcher: [
+    '/',
+    '/onboarding',
+    '/courses/:path*',
+    '/assignments/:path*',
+    '/resources/:path*',
+    //Add additional routes here once the pages are built (/course, /assignments, /resources)
+    //Using a pattern will protect everything underneath a route, for example "/course/:path*" will protect the course page and anything nested underneath it
+  ],
 };
