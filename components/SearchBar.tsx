@@ -22,7 +22,7 @@ export function Search() {
   return (
     <input
       type='text'
-      placeholder='Search courses, assignments, resources..'
+      placeholder='Search..'
       aria-label='Search courses, assignments, resrouces..'
       defaultValue={searchParams.get('query')?.toString()}
       onChange={(e) => handleSearch(e.target.value)}
