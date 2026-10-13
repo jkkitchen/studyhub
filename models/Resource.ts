@@ -5,15 +5,15 @@ import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 
 // A union type: a resource's type can ONLY be one of these three strings.
 // This was missing from your file, and is why 'ResourceType' had no definition.
-export type ResourceType = 'link' | 'note' | 'file';
+export type ResourceType = 'link' | 'note';
 
 // Describes the shape of ONE resource record, for TypeScript only (checked while you write code)
 export interface IResource extends Document {
   userId: string; // id of the user who owns this resource
   courseId: Types.ObjectId; // id of the course this resource belongs to
   title: string; // display name of the resource
-  type: ResourceType; // must be "link", "note" or "file"
-  content: string; // the URL, note text, or file reference
+  type: ResourceType; // must be "link" or "note"
+  content: string; // the URL or note text
   createdAt: Date; // added automatically by timestamps
   updatedAt: Date; // added automatically, changes on every update
 }
@@ -39,7 +39,7 @@ const ResourceSchema = new Schema<IResource>(
     },
     type: {
       type: String,
-      enum: ['link', 'note', 'file'], // Mongoose rejects any other value at runtime
+      enum: ['link', 'note'], // Mongoose rejects any other value at runtime
       default: 'link', // used when no type is given
     },
     content: {

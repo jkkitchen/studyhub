@@ -89,10 +89,6 @@ export default function ResourceList({ courses }: ResourceListProps) {
     (resource) => resource.type === 'note'
   );
 
-  const fileResources = resources.filter(
-    (resource) => resource.type === 'file'
-  );
-
   // Display a section of resources using our existing ResourceCard
   function renderSection(
     title: string,

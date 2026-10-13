@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.3",
-    "bcryptjs": "^3.0.3",
     "mongodb": "^6.21.0",
     "mongoose": "^9.10.2",
     "next": "16.3.4",
@@ -24,7 +23,6 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

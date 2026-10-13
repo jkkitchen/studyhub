@@ -78,7 +78,6 @@ export default function ResourceForm({ resource, courses }: ResourceFormProps) {
             </option>
             <option value="link">Link</option>
             <option value="note">Note</option>
-            <option value="file">File</option>
           </select>
           <svg
             aria-hidden="true"
