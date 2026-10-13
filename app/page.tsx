@@ -12,22 +12,25 @@ export const metadata: Metadata = {
   description: 'Your courses, assignments, and study resources at a glance.',
 };
 
-
 export default async function DashboardPage() {
-  // USER AUTHENTICATION
-  // Only authenticated users can access the dashboard.
+  //USER AUTHENTICATION
+  //Get the user session data from auth
   const session = await auth();
   if (!session?.user) {
     redirect('/login');
   }
 
-  //DATA FETCHING
-  const allCourses = await getCourses(); //need all courses available on this page so assignments can call the course code from this
-  const courses = allCourses.slice(0, 4); //only display the first 4 courses (will be in alphabetical order right now)
+  // DATA FETCHING
+  const allCourses = await getCourses();
+
+  // Display up to 4 items in each dashboard section
+  const courses = allCourses.slice(0, 4);
+
   const assignments = (await getAssignments())
-    .filter((assignment) => !assignment.completed) //only shows incomplete assignments on the dashboard
-    .slice(0,4); //only show the first 4 assignments on the dashboard
-  const resources = (await getResources()).slice(0,4); //only display 4 resources (will show 4 most recently created resources)
+    .filter((assignment) => !assignment.completed)
+    .slice(0, 4);
+
+  const resources = (await getResources()).slice(0, 4);
 
   const emailUsername = session?.user?.email
     ?.split('@')[0]
@@ -40,45 +43,15 @@ export default async function DashboardPage() {
   // PAGE CONTENT
   return (
     <main className='flex-1 mx-auto flex max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 sm:py-10'>
-      {/* Section 1: Welcome + search */}
+      {/* Section 1: Welcome */}
       <section className='rounded-2xl border-2 border-stone-200 bg-surface p-6 shadow-sm sm:p-8'>
-        <div className='flex flex-col gap-6 md:flex-row md:items-center md:justify-between'>
-          <div className='flex items-center gap-4'>
-            <div>
-              <h1 className='text-2xl font-bold tracking-tight text-dark-text sm:text-3xl'>
-                Welcome back, <span className='text-primary'>{userName}</span>!
-              </h1>
-              <p className='mt-1 text-sm text-muted sm:text-base'>
-                Here&apos;s what&apos;s on your plate.
-              </p>
-            </div>
-          </div>
-
-          {/* Placeholder only — search isn't wired up yet */}
-          <div className='relative w-full md:w-80'>
-            <svg
-              aria-hidden='true'
-              viewBox='0 0 24 24'
-              className='pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-subtle'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='2'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-            >
-              <circle cx='11' cy='11' r='7' />
-              <path d='M21 21l-4.3-4.3' />
-            </svg>
-            <input
-              type='text'
-              placeholder='Search courses, assignments, resources...'
-              className='w-full rounded-lg border-2 border-stone-200 bg-background py-2.5 pl-10 pr-4 text-sm text-dark-text placeholder:text-subtle transition-colors focus:border-accent focus:outline-none'
-            />
-          </div>
-        </div>
+        <h1 className='text-2xl font-bold tracking-tight text-dark-text sm:text-3xl'>
+          Welcome back, <span className='text-primary'>{userName}</span>!
+        </h1>
+        <p className='mt-1 text-sm text-muted sm:text-base'>
+          Here&apos;s what&apos;s on your plate.
+        </p>
       </section>
-
-
 
       {/* Section 2: Courses */}
       <section>
@@ -99,8 +72,6 @@ export default async function DashboardPage() {
           ))}
         </div>
       </section>
-
-
 
       {/* Section 3: Assignments */}
       <section>
@@ -132,8 +103,6 @@ export default async function DashboardPage() {
           })}
         </div>
       </section>
-
-
 
       {/* Section 4: Resources */}
       <section>

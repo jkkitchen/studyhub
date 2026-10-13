@@ -36,7 +36,7 @@ const courseSchema = z.object({
 
 const resourceSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  type: z.enum(['link', 'note', 'file'], 'Type is required'),
+  type: z.enum(['link', 'note'], 'Type is required'),
   content: z.string().min(1, 'Content is required'),
   courseId: z.string().min(1, 'Course is required'),
 });
@@ -116,9 +116,6 @@ export async function addAssignmentAction(
       message: 'Failed to create assignment.',
     };
   }
-
-  revalidatePath('/assignments');
-  redirect('/assignments');
 
   //Refresh the cached data on the assignments page reload the page to show the new assignment
   revalidatePath('/assignments');

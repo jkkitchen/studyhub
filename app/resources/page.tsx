@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getCourses } from '@/lib/db';
 import ResourceList from '@/components/ResourceList';
+import { Search } from '@/components/SearchBar';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Resources',
@@ -22,7 +24,7 @@ export default async function ResourcesPage() {
             Resources
           </h1>
           <p className='mt-1 text-sm text-muted sm:text-base'>
-            Notes, links, and recordings, most recently opened first.
+            Notes and links most recently opened first.
           </p>
         </div>
 
@@ -47,13 +49,23 @@ export default async function ResourcesPage() {
         </Link>
       </div>
 
+      {/* Search resources */}
+      <div className='w-full'>
+        <Suspense fallback={null}>
+          <Search />
+        </Suspense>
+      </div>
+
       {/* Resource sections will be rendered by the client component */}
-      <ResourceList
-        courses={courses.map((course) => ({
-          id: course._id.toString(),
-          code: course.code,
-        }))}
-      />
+      {/* Wrapped in Suspense because it now uses search params as well */}
+      <Suspense fallback={<p>Loading resources...</p>}>
+        <ResourceList
+          courses={courses.map((course) => ({
+            id: course._id.toString(),
+            code: course.code,
+          }))}
+        />
+      </Suspense>
     </div>
   );
 }

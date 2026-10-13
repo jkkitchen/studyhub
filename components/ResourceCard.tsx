@@ -24,7 +24,7 @@ export default function ResourceCard({
         <p className='text-sm text-muted'>{courseCode}</p>
       </div>
 
-      <span className='shrink-0 text-xs font-medium text-subtle'>
+      <span className='shrink-0 text-xs font-medium text-stone-600'>
         {resource.type}
       </span>
     </Link>

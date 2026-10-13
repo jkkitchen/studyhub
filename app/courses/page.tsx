@@ -1,19 +1,34 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import CourseCard from '@/components/CourseCard';
-import { getCourses } from '@/lib/db';
+import { getFilteredCourses, getCoursesTotalPages } from '@/lib/db';
+import { Search } from '@/components/SearchBar';
+import { Pagination } from '@/components/Pagination';
+import { Suspense } from 'react'; //A React component that allows you to display temporary content while another component is waiting to finish rendering.
 
 export const metadata: Metadata = {
   title: 'Courses',
   description: 'All the courses you are enrolled in.',
 };
 
-export default async function CoursesPage() {
-  //Get courses
-  const courses = await getCourses();
+export default async function CoursesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string; page?: string }>;
+}) {
+  const params = await searchParams;
+
+  const query = params.query || '';
+  const currentPage = Math.max(1, Math.floor(Number(params.page) || 1));
+
+  //getFilteredCourses works the same as getCourses when nothing is entered in the search bar
+  const [courses, totalPages] = await Promise.all([
+    getFilteredCourses(query, currentPage),
+    getCoursesTotalPages(query),
+  ]);
 
   return (
-    <div className='mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 sm:py-10'>
+    <div className='mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 sm:py-10'>
       {/* Page header */}
       <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <div>
@@ -46,6 +61,11 @@ export default async function CoursesPage() {
         </Link>
       </div>
 
+      {/* Search courses */}
+      <Suspense fallback={<div>Loading search...</div>}>
+        <Search />
+      </Suspense>
+
       {/* Courses grid */}
       {courses.length === 0 ? (
         <p className='text-sm text-muted'>
@@ -59,6 +79,11 @@ export default async function CoursesPage() {
           ))}
         </div>
       )}
+
+      {/* Pagination */}
+      <Suspense fallback={null}>
+        <Pagination totalPages={totalPages} />
+      </Suspense>
     </div>
   );
 }
