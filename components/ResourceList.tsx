@@ -1,4 +1,4 @@
-//This client component fetches data from the API Route Handler 
+//This client component fetches data from the API Route Handler
 // (Component -> API Route Handler -> Database Function -> MongoDB)
 'use client';
 
@@ -22,8 +22,7 @@ interface ResourceListProps {
 export default function ResourceList({ courses }: ResourceListProps) {
   const searchParams = useSearchParams();
 
-    const query = searchParams.get('query') || '';
-    console.log('ResourceList search query:', query);
+  const query = searchParams.get('query') || '';
   const currentPage = Math.max(
     1,
     Math.floor(Number(searchParams.get('page')) || 1)
@@ -36,10 +35,10 @@ export default function ResourceList({ courses }: ResourceListProps) {
 
   // Fetch resources from our API route
   useEffect(() => {
-      async function fetchResources() {
-        setLoading(true); //makes it so later searches will still show loading message
-        setError(''); //if a request fails, the error message won't automatically disappear whent he next request succeeds
-          
+    async function fetchResources() {
+      setLoading(true); //makes it so later searches will still show loading message
+      setError(''); //if a request fails, the error message won't automatically disappear whent he next request succeeds
+
       try {
         const params = new URLSearchParams({
           query,
@@ -122,16 +121,16 @@ export default function ResourceList({ courses }: ResourceListProps) {
     );
   }
 
-return (
-  <>
-    {renderSection('Links', linkResources, 'No links added yet.')}
-    {renderSection('Notes', noteResources, 'No notes added yet.')}
-    {renderSection('Files', fileResources, 'No files added yet.')}
+  return (
+    <>
+      {renderSection('Links', linkResources, 'No links added yet.')}
+      {renderSection('Notes', noteResources, 'No notes added yet.')}
+      {renderSection('Files', fileResources, 'No files added yet.')}
 
-    {/* Pagination */}
-    <div className='mt-8 flex justify-center'>
-      <Pagination totalPages={totalPages} />
-    </div>
-  </>
-);
+      {/* Pagination */}
+      <div className='mt-8 flex justify-center'>
+        <Pagination totalPages={totalPages} />
+      </div>
+    </>
+  );
 }
