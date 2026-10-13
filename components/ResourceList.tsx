@@ -124,7 +124,7 @@ export default function ResourceList({ courses }: ResourceListProps) {
   return (
     <>
       {renderSection('Links', linkResources, 'No links added yet.')}
-      {renderSection('Notes', noteResources, 'No notes added yet.')}      
+      {renderSection('Notes', noteResources, 'No notes added yet.')}
 
       {/* Pagination */}
       <div className='mt-8 flex justify-center'>
