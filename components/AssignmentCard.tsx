@@ -52,7 +52,7 @@ export default function AssignmentCard({
     late: {
       card: 'border-red-200 border-l-danger bg-red-50',
       dot: 'bg-danger',
-      badge: 'bg-danger-light text-danger',
+      badge: 'bg-danger-light text-red-800',
       label: 'Late',
     },
     tooLate: {

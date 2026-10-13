@@ -1,17 +1,37 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getAssignments, getCourses } from '@/lib/db';
+import {
+  getFilteredAssignments,
+  getAssignmentsTotalPages,
+  getCourses,
+} from '@/lib/db';
+
 import AssignmentCard from '@/components/AssignmentCard';
+import { Search } from '@/components/SearchBar';
+import { Pagination } from '@/components/Pagination';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Assignments',
   description: 'All your assignments across every course, ranked by due date.',
 };
 
-export default async function AssignmentsPage() {
-  //Data Fetching
-  const assignments = await getAssignments();
-  const courses = await getCourses(); //Need this to display Course Code on Assignment Card
+export default async function AssignmentsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string; page?: string }>;
+}) {
+  // Get the search term and page number from the URL
+  const params = await searchParams;
+  const query = params.query || '';
+  const currentPage = Math.max(1, Math.floor(Number(params.page) || 1));
+
+  // Get matching assignments, total pages, and courses
+  const [assignments, totalPages, courses] = await Promise.all([
+    getFilteredAssignments(query, currentPage),
+    getAssignmentsTotalPages(query),
+    getCourses(), //Need this to display course code on assignment cards
+  ]);
 
   //Separate assignments into two sections: Complete and Incomplete
   const incompleteAssignments = assignments.filter(
@@ -54,6 +74,13 @@ export default async function AssignmentsPage() {
           </svg>
           Add Assignment
         </Link>
+      </div>
+
+      {/* Search assignments */}
+      <div className='mb-6 w-full'>
+        <Suspense fallback={null}>
+          <Search />
+        </Suspense>
       </div>
 
       {/* Incomplete assignments */}
@@ -101,6 +128,14 @@ export default async function AssignmentsPage() {
           })}
         </div>
       </section>
+
+      {/* Pagination */}
+      <div className='mt-8 flex justify-center'>
+        <Suspense fallback={null}>
+          <Pagination totalPages={totalPages} />
+        </Suspense>
+      </div>
+      
     </div>
   );
 }
